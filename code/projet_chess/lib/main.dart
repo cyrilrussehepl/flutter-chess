@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/sign_in_page.dart';
+import 'screens/authentication/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Login',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.grey,
       ),
       home: SignInPage(),
     );
