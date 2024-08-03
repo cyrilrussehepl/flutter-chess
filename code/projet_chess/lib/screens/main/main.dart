@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/main/friends_tab.dart';
 import 'package:projet_chess/screens/main/games_tab.dart';
-import 'package:projet_chess/screens/main/profile.dart';
+import 'package:projet_chess/screens/main/profile_tab.dart';
 import 'package:projet_chess/widgets/logout_button.dart';
 
 class MainPage extends StatefulWidget {
