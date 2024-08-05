@@ -7,6 +7,7 @@ class SignUpPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pwdController = TextEditingController();
+  final authentication = Authentication();
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +40,9 @@ class SignUpPage extends StatelessWidget {
             ),
             const SizedBox(height: 24.0),
             ElevatedButton(
-                child: const Text('Créer un compte'),
-                onPressed: () => Authentication.signUp(
-                    emailController.text, pwdController.text, context)),
+              child: const Text('Créer un compte'),
+              onPressed: () => signUp(context),
+            ),
             TextButton(
               child: const Text("J'ai déjà un compte"),
               onPressed: () {
@@ -56,5 +57,16 @@ class SignUpPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void signUp(BuildContext context) {
+    getInputs(context);
+    authentication.signUp();
+  }
+
+  void getInputs(BuildContext context) {
+    authentication.email = emailController.text;
+    authentication.password = pwdController.text;
+    authentication.context = context;
   }
 }

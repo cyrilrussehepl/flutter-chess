@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/main/friends_tab.dart';
 import 'package:projet_chess/screens/main/games_tab.dart';
 import 'package:projet_chess/screens/main/profile_tab.dart';
 import 'package:projet_chess/widgets/logout_button.dart';
+import 'package:dto/user.dart' as userDTO;
+import 'package:projet_chess/widgets/loading.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,12 +19,35 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   late TabController _tabControllerForParties;
   late TabController _tabControllerForFriends;
+  late final Stream<DocumentSnapshot<userDTO.User>>? _userStream;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  bool isSessionInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _tabControllerForParties = TabController(vsync: this, length: 2);
-    _tabControllerForFriends = TabController(vsync: this, length: 2);
+    _tabControllerForFriends = TabController(vsync: this, length: 3);
+
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    final User? user = firebaseAuth.currentUser;
+
+    if (user != null) {
+      setState(() {
+        isSessionInitialized = true;
+      });
+    } else {
+      firebaseAuth.authStateChanges().listen((User? user) {
+        if (mounted) {
+          setState(() {
+            isSessionInitialized = user != null;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -35,7 +62,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ChessPointCom'),
-        actions: const <Widget>[
+        actions: <Widget>[
           LogoutButton(),
         ],
         bottom: _selectedIndex == 0 || _selectedIndex == 1
@@ -52,13 +79,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     tabs: const [
                       Tab(text: 'Amis'),
                       Tab(text: 'Invitations'),
+                      Tab(icon: Icon(Icons.add))
                     ],
                   ))
             : null,
       ),
-      drawer: const Drawer(
-          ),
-      body: _buildBody(),
+      body: !isSessionInitialized ? const LoadingWidget() : _buildBody(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
