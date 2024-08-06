@@ -6,10 +6,11 @@ class UserService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<UserDTO.User> getUser() async{
+  Future<UserDTO.User> getUser() async {
     final userAuthentifie = _auth.currentUser;
 
-    final userDoc = await _firestore.collection('users').doc(userAuthentifie?.email).get();
+    final userDoc =
+        await _firestore.collection('users').doc(userAuthentifie?.email).get();
     UserDTO.User user = UserDTO.User.fromJson(userDoc.data());
     return user;
   }
@@ -41,4 +42,3 @@ class UserService {
     }
   }
 }
-

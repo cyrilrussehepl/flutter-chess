@@ -18,9 +18,22 @@ class User {
       email: json?['email'] as String ?? '',
       id: json?['id'] as String ?? '',
       friends: List<String>.from(json?['friends'] as List<dynamic>) ?? [],
-      invitationsSent: List<String>.from(json?['invitationsSent'] as List<dynamic>) ?? [],
-      invitationsReceived: List<String>.from(json?['invitationsReceived'] as List<dynamic>)??[],
+      invitationsSent:
+          List<String>.from(json?['invitationsSent'] as List<dynamic>) ?? [],
+      invitationsReceived:
+          List<String>.from(json?['invitationsReceived'] as List<dynamic>) ??
+              [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'id': id,
+      'friends': friends,
+      'invitationsSent': invitationsSent,
+      'invitationsReceived': invitationsReceived,
+    };
   }
 
   @override

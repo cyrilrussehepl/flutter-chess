@@ -8,7 +8,7 @@ import 'firebase_options.dart';
 import 'package:dto/user.dart' as userDTO;
 
 // Future<void> main() async {
-  void main()async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -39,7 +39,6 @@ import 'package:dto/user.dart' as userDTO;
   //   print('Document does not exist');
   // }
 
-
   final auth = FirebaseAuth.instance;
   String? email = 'grace@example.com';
   const password = '1234567890';
@@ -49,12 +48,12 @@ import 'package:dto/user.dart' as userDTO;
 
   try {
     DocumentSnapshot documentSnapshot =
-    await firestore.collection('users').doc(email).get();
+        await firestore.collection('users').doc(email).get();
 
     if (documentSnapshot.exists) {
       print("doc exists");
       Map<String, dynamic> data =
-      documentSnapshot.data() as Map<String, dynamic>;
+          documentSnapshot.data() as Map<String, dynamic>;
       userDTO.User user = userDTO.User.fromJson(data);
       print(user.toString());
     }

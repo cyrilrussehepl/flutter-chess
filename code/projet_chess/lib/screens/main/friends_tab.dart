@@ -25,13 +25,14 @@ class FriendsTab extends StatelessWidget {
                 return const LoadingWidget();
               }
 
-              if(snapshot.hasError){
+              if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Une erreur est survenue lors du chargement de la liste d\'amis'),
+                  child: Text(
+                      'Une erreur est survenue lors du chargement de la liste d\'amis'),
                 );
               }
 
-              if(snapshot.hasData && snapshot.data!.isEmpty){
+              if (snapshot.hasData && snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text('Vous n\'avez pas encore d\'amis'),
                 );
@@ -46,13 +47,14 @@ class FriendsTab extends StatelessWidget {
                 return const LoadingWidget();
               }
 
-              if(snapshot.hasError){
+              if (snapshot.hasError) {
                 return const Center(
-                  child: Text('Une erreur est survenue lors du chargement des demandes d\'amis'),
+                  child: Text(
+                      'Une erreur est survenue lors du chargement des demandes d\'amis'),
                 );
               }
 
-              if(snapshot.hasData && snapshot.data!.isEmpty){
+              if (snapshot.hasData && snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text('Aucune invitations'),
                 );

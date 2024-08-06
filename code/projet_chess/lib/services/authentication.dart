@@ -48,8 +48,7 @@ class Authentication {
   void signIn() async {
     if (!inputsAreValid()) return;
 
-      await _auth.signInWithEmailAndPassword(
-          email: _email, password: _password);
+    await _auth.signInWithEmailAndPassword(email: _email, password: _password);
   }
 
   void signUp() async {
