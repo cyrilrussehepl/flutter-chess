@@ -15,30 +15,51 @@ class UserService {
     return user;
   }
 
-  Future<List<String>> getFriendsList() async {
-    try {
-      UserDTO.User user = await getUser();
-      return user.friends;
-    } catch (e) {
-      return [];
-    }
+  Stream<List<String>> getFriendsListStream() {
+    final userAuthentifie = _auth.currentUser;
+    return _firestore
+        .collection('users')
+        .doc(userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        UserDTO.User user = UserDTO.User.fromJson(snapshot.data());
+        return user.friends;
+      } else {
+        return [];
+      }
+    });
   }
 
-  Future<List<String>> getInvitationsSent() async {
-    try {
-      UserDTO.User user = await getUser();
-      return user.invitationsSent;
-    } catch (e) {
-      return [];
-    }
+  Stream<List<String>> getInvitationsSentStream() {
+    final userAuthentifie = _auth.currentUser;
+    return _firestore
+        .collection('users')
+        .doc(userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        UserDTO.User user = UserDTO.User.fromJson(snapshot.data());
+        return user.invitationsSent;
+      } else {
+        return [];
+      }
+    });
   }
 
-  Future<List<String>> getInvitationsReceived() async {
-    try {
-      UserDTO.User user = await getUser();
-      return user.invitationsReceived;
-    } catch (e) {
-      return [];
-    }
+  Stream<List<String>> getInvitationsReceivedStream() {
+    final userAuthentifie = _auth.currentUser;
+    return _firestore
+        .collection('users')
+        .doc(userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        UserDTO.User user = UserDTO.User.fromJson(snapshot.data());
+        return user.invitationsReceived;
+      } else {
+        return [];
+      }
+    });
   }
 }

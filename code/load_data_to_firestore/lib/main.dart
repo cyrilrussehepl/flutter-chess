@@ -1,9 +1,5 @@
-// import 'package:dto/team.dart';
 import 'package:dto/user.dart';
 import 'package:firedart/firedart.dart';
-
-// import 'package:load_data_to_firestore/config.dart';
-import 'package:load_data_to_firestore/teams.dart';
 import 'package:load_data_to_firestore/users.dart';
 
 String pi = 'flutter-chess-1af50';

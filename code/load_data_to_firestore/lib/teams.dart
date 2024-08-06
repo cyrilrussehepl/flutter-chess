@@ -1,6 +1,5 @@
 // import 'package:dto/team.dart';
 // import 'package:load_data_to_firestore/transactions.dart';
-import 'package:load_data_to_firestore/users.dart';
 
 // List<Team> teams = [
 //   Team(

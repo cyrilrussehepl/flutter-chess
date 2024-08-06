@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/main/friends_tab.dart';
 import 'package:projet_chess/screens/main/games_tab.dart';
 import 'package:projet_chess/screens/main/profile_tab.dart';
 import 'package:projet_chess/widgets/logout_button.dart';
-import 'package:dto/user.dart' as userDTO;
 import 'package:projet_chess/widgets/loading.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,7 +17,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   late TabController _tabControllerForParties;
   late TabController _tabControllerForFriends;
-  late final Stream<DocumentSnapshot<userDTO.User>>? _userStream;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   bool isSessionInitialized = false;
 

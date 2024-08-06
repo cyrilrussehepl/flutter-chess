@@ -1,5 +1,4 @@
 // import 'package:dto/transaction.dart';
-import 'package:load_data_to_firestore/users.dart';
 
 //
 // List<Transaction> transactions = [
