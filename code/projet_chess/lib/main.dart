@@ -15,30 +15,6 @@ void main() async {
   );
   runApp(const MyApp());
 
-  // late final Stream<DocumentSnapshot<userDTO.User>>? _userStream;
-  // _userStream = FirebaseFirestore.instance
-  //     .collection('users')
-  //     .withConverter<userDTO.User>(
-  //       fromFirestore: (snapshot, _)=>userDTO.User.fromJson(snapshot.data()!),
-  //       toFirestore: (user, _)=>user.toJson()
-  //     )
-  //     .doc('user')
-  //     .snapshots();
-
-  // Lire un document par son ID
-
-  // FirebaseFirestore db = FirebaseFirestore.instance;
-  //
-  // await db.collection('users').doc('user').update({'email': 'test2@gmail.com'});
-  // DocumentSnapshot documentSnapshot = await db.collection('users').doc('user').get();
-  // if (documentSnapshot.exists) {
-  //   Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-  //   print('email:${data['email']}');
-  //
-  // } else {
-  //   print('Document does not exist');
-  // }
-
   // final auth = FirebaseAuth.instance;
   // String? email = 'grace@example.com';
   // const password = '1234567890';
@@ -79,8 +55,39 @@ class MyApp extends StatelessWidget {
           indicatorColor: Colors.green,
           labelColor: Colors.green,
         ),
-        appBarTheme: AppBarTheme(color: Colors.blueGrey[50]),
+        appBarTheme: AppBarTheme(
+          color: Colors.blueGrey[50], // Couleur de fond de l'AppBar
+          titleTextStyle: TextStyle(
+            color: Colors.green.withOpacity(0.8), // Couleur du texte
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          iconTheme: const IconThemeData(
+            color: Colors.green, // Couleur des icônes
+          ),
+          elevation: 0, // Optionnel : Retire l'ombre pour un look plus plat
+        ),
         scaffoldBackgroundColor: Colors.white,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.green,
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.green),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+        ),
       ),
       home: SignInPage(),
     );
