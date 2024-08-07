@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:projet_chess/widgets/list_tile_actions.dart';
+
+enum ListType {
+  friendsList,
+  invitationsReceived,
+  invitationsSent,
+  challengesSent
+}
 
 class ListViewCustom extends StatelessWidget {
   final List<String> list;
-  final List<Widget> actions;
+  final ListType listType;
 
-  const ListViewCustom({super.key, required this.list, required this.actions});
+  const ListViewCustom(
+      {super.key,
+      required this.list,
+      required this.listType});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +37,24 @@ class ListViewCustom extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(list[index]), Row(children: actions)],
+                  children: [Text(list[index]), Row(children: tileActions(listType, list[index]))],
                 )),
           );
         },
       ),
     ));
+  }
+
+  List<Widget> tileActions(ListType listType, String item) {
+    switch (listType) {
+      case ListType.friendsList:
+        return friendListActions(item);
+      case ListType.challengesSent:
+        return cancelActions(item);
+      case ListType.invitationsReceived:
+        return invitationListActions(item);
+      default:
+        return [];
+    }
   }
 }

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_chess/services/util.dart';
-
 import '../screens/authentication/sign_in.dart';
 import '../screens/main/main.dart';
 
@@ -36,10 +35,9 @@ class Authentication {
   void signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacement(
-        _context,
-        MaterialPageRoute(builder: (context) => SignInPage()),
-      );
+      if (!_context.mounted) return;
+      Navigator.of(_context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const SignInPage()));
     } catch (e) {
       Util.showError('Impossible de se déconnecter', _context);
     }
@@ -62,8 +60,9 @@ class Authentication {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: _email, password: _password);
-      Navigator.pushReplacement(
-          _context, MaterialPageRoute(builder: (context) => const MainPage()));
+      if (!_context.mounted) return;
+      Navigator.of(_context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MainPage()));
     } on FirebaseAuthException catch (e) {
       Util.showAuthError(e.code, _context);
     }

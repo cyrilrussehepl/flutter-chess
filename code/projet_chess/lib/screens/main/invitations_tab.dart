@@ -3,10 +3,10 @@ import 'package:projet_chess/services/user_services.dart';
 import 'package:projet_chess/widgets/loading.dart';
 import 'package:projet_chess/widgets/list_view.dart';
 
-class FriendsTab extends StatelessWidget {
+class InvitationsTab extends StatelessWidget {
   final TabController tabController;
 
-  const FriendsTab({super.key, required this.tabController});
+  const InvitationsTab({super.key, required this.tabController});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class FriendsTab extends StatelessWidget {
       controller: tabController,
       children: <Widget>[
         StreamBuilder(
-          stream: userService.getFriendsListStream(),
+          stream: userService.getChallengesReceivedStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingWidget();
@@ -25,22 +25,22 @@ class FriendsTab extends StatelessWidget {
             if (snapshot.hasError) {
               return const Center(
                 child: Text(
-                    'Une erreur est survenue lors du chargement de la liste d\'amis'),
+                    'Une erreur est survenue lors du chargement des défis reçus'),
               );
             }
 
             if (snapshot.hasData && snapshot.data!.isEmpty) {
               return const Center(
-                child: Text('Vous n\'avez pas encore d\'amis'),
+                child: Text('Aucun défi'),
               );
             }
 
             return ListViewCustom(
-                list: snapshot.data!, listType: ListType.friendsList);
+                list: snapshot.data!, listType: ListType.invitationsReceived,);
           },
         ),
         StreamBuilder(
-          stream: userService.getInvitationsReceivedStream(),
+          stream: userService.getChallengesSentStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingWidget();
@@ -49,31 +49,22 @@ class FriendsTab extends StatelessWidget {
             if (snapshot.hasError) {
               return const Center(
                 child: Text(
-                    'Une erreur est survenue lors du chargement des demandes d\'amis'),
+                    'Une erreur est survenue lors du chargement des défis envoyés'),
               );
             }
 
             if (snapshot.hasData && snapshot.data!.isEmpty) {
               return const Center(
-                child: Text('Aucune invitation'),
+                child: Text('Aucun défi'),
               );
             }
 
             return ListViewCustom(
               list: snapshot.data!,
-              listType: ListType.invitationsReceived,
+              listType: ListType.challengesSent,
             );
           },
         ),
-        const Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(children: <Widget>[
-              SearchBar(
-                leading:
-                Padding(
-                    padding: EdgeInsets.all(10), child: Icon(Icons.search)),
-              )
-            ]))
       ],
     );
   }

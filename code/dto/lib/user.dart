@@ -2,15 +2,19 @@ class User {
   String email;
   String id;
   List<String> friends;
-  List<String> invitationsSent;
-  List<String> invitationsReceived;
+  List<String> sentFriendRequests;
+  List<String> receivedFriendRequests;
+  List<String> sentChallengeRequests;
+  List<String> receivedChallengeRequests;
 
   User({
     required this.email,
     required this.id,
     required this.friends,
-    required this.invitationsSent,
-    required this.invitationsReceived,
+    required this.sentFriendRequests,
+    required this.receivedFriendRequests,
+    required this.sentChallengeRequests,
+    required this.receivedChallengeRequests,
   });
 
   factory User.fromJson(Map<String, dynamic>? json) {
@@ -18,10 +22,16 @@ class User {
       email: json?['email'] as String ?? '',
       id: json?['id'] as String ?? '',
       friends: List<String>.from(json?['friends'] as List<dynamic>) ?? [],
-      invitationsSent:
-          List<String>.from(json?['invitationsSent'] as List<dynamic>) ?? [],
-      invitationsReceived:
-          List<String>.from(json?['invitationsReceived'] as List<dynamic>) ??
+      sentFriendRequests:
+          List<String>.from(json?['sentFriendRequests'] as List<dynamic>) ?? [],
+      receivedFriendRequests:
+          List<String>.from(json?['receivedFriendRequests'] as List<dynamic>) ??
+              [],
+      sentChallengeRequests:
+          List<String>.from(json?['challengesSent'] as List<dynamic>) ??
+              [],
+      receivedChallengeRequests:
+          List<String>.from(json?['challengesReceived'] as List<dynamic>) ??
               [],
     );
   }
@@ -31,13 +41,15 @@ class User {
       'email': email,
       'id': id,
       'friends': friends,
-      'invitationsSent': invitationsSent,
-      'invitationsReceived': invitationsReceived,
+      'sentFriendRequests': sentFriendRequests,
+      'receivedFriendRequests': receivedFriendRequests,
+      'challengesSent':sentChallengeRequests,
+      'challengesReceived':receivedChallengeRequests,
     };
   }
 
   @override
   String toString() {
-    return 'User{email: $email, id: $id, friends: $friends, invitationSent: $invitationsSent, invitationReceived: $invitationsReceived}';
+    return 'User{email: $email, id: $id, friends: $friends, invitationSent: $sentFriendRequests, invitationReceived: $receivedFriendRequests, challengesSent: $sentChallengeRequests, challengesReceived: $receivedChallengeRequests}';
   }
 }

@@ -49,7 +49,7 @@ class SignUpPage extends StatelessWidget {
                 // Navigate to Sign in page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInPage()),
+                  MaterialPageRoute(builder: (context) => const SignInPage()),
                 );
               },
             ),

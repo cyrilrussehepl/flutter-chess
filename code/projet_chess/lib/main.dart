@@ -50,7 +50,9 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
             selectedItemColor: Colors.green,
-            backgroundColor: Colors.blueGrey[50]),
+            backgroundColor: Colors.blueGrey[50],
+          unselectedItemColor: Colors.grey,
+        ),
         tabBarTheme: const TabBarTheme(
           indicatorColor: Colors.green,
           labelColor: Colors.green,
@@ -88,8 +90,11 @@ class MyApp extends StatelessWidget {
             borderSide: BorderSide(color: Colors.grey),
           ),
         ),
+        searchBarTheme: SearchBarThemeData(
+          backgroundColor: WidgetStateProperty.all(Colors.blueGrey[50])
+        )
       ),
-      home: SignInPage(),
+      home: const SignInPage(),
     );
   }
 }

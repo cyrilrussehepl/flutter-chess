@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/main/friends_tab.dart';
 import 'package:projet_chess/screens/main/games_tab.dart';
+import 'package:projet_chess/screens/main/invitations_tab.dart';
 import 'package:projet_chess/screens/main/profile_tab.dart';
 import 'package:projet_chess/widgets/logout_button.dart';
 import 'package:projet_chess/widgets/loading.dart';
@@ -10,13 +11,14 @@ class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
+class MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   late TabController _tabControllerForParties;
   late TabController _tabControllerForFriends;
+  late TabController _tabControllerForInvitations;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   bool isSessionInitialized = false;
 
@@ -25,6 +27,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     _tabControllerForParties = TabController(vsync: this, length: 2);
     _tabControllerForFriends = TabController(vsync: this, length: 3);
+    _tabControllerForInvitations = TabController(vsync: this, length: 2);
 
     _checkAuthentication();
   }
@@ -47,10 +50,40 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
   }
 
+  TabBar _buildTabBar() {
+    if (_selectedIndex == 0) {
+      return TabBar(
+        controller: _tabControllerForParties,
+        tabs: const [
+          Tab(text: 'En cours'),
+          Tab(text: 'Finies'),
+        ],
+      );
+    } else if (_selectedIndex == 1) {
+      return TabBar(
+        controller: _tabControllerForFriends,
+        tabs: const [
+          Tab(text: 'Amis'),
+          Tab(text: 'Invitations'),
+          Tab(icon: Icon(Icons.add)),
+        ],
+      );
+    } else {
+      return TabBar(
+        controller: _tabControllerForInvitations,
+        tabs: const [
+          Tab(text: 'Défis reçus'),
+          Tab(text: 'Défis en attente'),
+        ],
+      );
+    }
+  }
+
   @override
   void dispose() {
     _tabControllerForParties.dispose();
     _tabControllerForFriends.dispose();
+    _tabControllerForInvitations.dispose();
     super.dispose();
   }
 
@@ -58,27 +91,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ChessPointCom'),
+        title: const Text('AsyncChess'),
         actions: <Widget>[
           LogoutButton(),
         ],
-        bottom: _selectedIndex == 0 || _selectedIndex == 1
-            ? (_selectedIndex == 0
-                ? TabBar(
-                    controller: _tabControllerForParties,
-                    tabs: const [
-                      Tab(text: 'En cours'),
-                      Tab(text: 'Finies'),
-                    ],
-                  )
-                : TabBar(
-                    controller: _tabControllerForFriends,
-                    tabs: const [
-                      Tab(text: 'Amis'),
-                      Tab(text: 'Invitations'),
-                      Tab(icon: Icon(Icons.add))
-                    ],
-                  ))
+        bottom: _selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 2
+            ? _buildTabBar()
             : null,
       ),
       body: !isSessionInitialized ? const LoadingWidget() : _buildBody(),
@@ -92,6 +110,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             icon: Icon(Icons.people),
             label: 'Amis',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.email), label: 'Défis'),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profil',
@@ -110,6 +129,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       case 1:
         return FriendsTab(tabController: _tabControllerForFriends);
       case 2:
+        return InvitationsTab(tabController: _tabControllerForInvitations);
+      case 3:
         return const Profile();
       default:
         return const Center(child: Text("Erreur"));
@@ -120,5 +141,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     setState(() {
       _selectedIndex = index;
     });
+
+
   }
 }

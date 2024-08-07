@@ -1,35 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:projet_chess/services/user_services.dart';
 
-List<Widget> friendListActions() {
+List<Widget> friendListActions(String friendId) {
   return <Widget>[
     IconButton(
       icon: Icon(MdiIcons.chessKing),
-      onPressed: () {
-        print('Défier à une partie');
+      onPressed: () async {
+        await UserService.instance.sendChallengeRequest(friendId);
       },
     ),
     IconButton(
-      icon: Icon(Icons.person_remove, color: Colors.red),
-      onPressed: () {
-        print('Supprimer');
+      icon: const Icon(Icons.person_remove, color: Colors.red),
+      onPressed: () async {
+        await UserService.instance.removeFriend(friendId);
       },
     ),
   ];
 }
 
-List<Widget> invitationListActions() {
+List<Widget> invitationListActions(String friendId) {
   return <Widget>[
     IconButton(
-      icon: Icon(Icons.check, color: Colors.green),
-      onPressed: () {
-        print('Accepter l\'invitation');
+      icon: const Icon(Icons.check, color: Colors.green),
+      onPressed: () async {
+        await UserService.instance.acceptFriendRequest(friendId);
       },
     ),
     IconButton(
-      icon: Icon(Icons.close, color: Colors.red),
-      onPressed: () {
-        print('Rejeter l\'invitation');
+      icon: const Icon(Icons.close, color: Colors.red),
+      onPressed: () async {
+        await UserService.instance.refuseFriendRequest(friendId);
+      },
+    ),
+  ];
+}
+
+List<Widget> cancelActions(String friendId) {
+  return <Widget>[
+    IconButton(
+      icon: const Icon(Icons.cancel, color: Colors.red),
+      onPressed: () async {
+        await UserService.instance.cancelChallengeRequest(friendId);
       },
     ),
   ];
@@ -38,13 +50,13 @@ List<Widget> invitationListActions() {
 List<Widget> gameListActions() {
   return <Widget>[
     IconButton(
-      icon: Icon(Icons.play_arrow, color: Colors.blue),
+      icon: const Icon(Icons.play_arrow, color: Colors.blue),
       onPressed: () {
         print('Rejoindre la partie');
       },
     ),
     IconButton(
-      icon: Icon(Icons.info, color: Colors.grey),
+      icon: const Icon(Icons.info, color: Colors.grey),
       onPressed: () {
         print('Voir les détails de la partie');
       },

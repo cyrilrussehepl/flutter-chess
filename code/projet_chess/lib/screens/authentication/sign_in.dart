@@ -6,6 +6,8 @@ import 'package:projet_chess/services/util.dart';
 import '../main/main.dart';
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
   State<StatefulWidget> createState() => _SignInPageState();
 }
@@ -51,15 +53,8 @@ class _SignInPageState extends State<SignInPage> {
               child: const Text('Se Connecter'),
             ),
             TextButton(
-              child: const Text("Créer un compte"),
-              onPressed: () {
-                // Navigate to the Create Account Page
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
-                );
-              },
-            ),
+                onPressed: isLoading ? null : openSignUpPage,
+                child: const Text("Créer un compte")),
           ],
         ),
       ),
@@ -84,6 +79,13 @@ class _SignInPageState extends State<SignInPage> {
       });
       Util.showAuthError(e.code, context);
     }
+  }
+
+  void openSignUpPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpPage()),
+    );
   }
 
   void getInputs() {
