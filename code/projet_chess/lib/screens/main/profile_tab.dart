@@ -19,7 +19,22 @@ class ProfileState extends State<Profile> {
   final ImagePicker _picker = ImagePicker();
   final _userServices = UserService.instance;
   final _storage = FirebaseStorage.instance;
+  bool isInEditMode = false;
   bool isUploading = false;
+
+  String? _selectedCountry;
+
+  // Liste des pays (pour un exemple simple)
+  final List<String> _countries = [
+    'United States',
+    'Canada',
+    'France',
+    'Germany',
+    'Japan',
+    'Australia',
+    'Brazil',
+    'India',
+  ];
 
   Future getImageFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -81,111 +96,160 @@ class ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: StreamBuilder(
-            stream: _userServices.getUserStream(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const LoadingWidget();
-              } else if (snapshot.hasError || !snapshot.hasData) {
-                return const Column(children: [
-                  Icon(Icons.error),
-                  Text('Erreur lors du chargement des données')
-                ]);
-              }
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Profil"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  isInEditMode = true;
+                });
+              },
+              icon: const Icon(Icons.edit))
+        ],
+        backgroundColor: Colors.blueGrey.withOpacity(0.05),
+      ),
+      body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: StreamBuilder(
+              stream: _userServices.getUserStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LoadingWidget();
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                  return const Column(children: [
+                    Icon(Icons.error),
+                    Text('Erreur lors du chargement des données')
+                  ]);
+                }
 
-              user_dto.User user = snapshot.data!;
+                user_dto.User user = snapshot.data!;
 
-              return Column(
-                children: [
-                  Stack(
-                    children: [
-                      FutureBuilder(
-                          future: _userServices.getProfilePictureUrl(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                    ConnectionState.waiting ||
-                                snapshot.connectionState !=
-                                    ConnectionState.done) {
-                              return const LoadingWidget();
-                            } else if (snapshot.hasError ||
-                                !snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return const Icon(Icons.account_circle,
-                                  size: 100);
-                            }
+                return Column(
+                  children: [
+                    Stack(
+                      children: [
+                        FutureBuilder(
+                            future: _userServices.getProfilePictureUrl(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                      ConnectionState.waiting ||
+                                  snapshot.connectionState !=
+                                      ConnectionState.done) {
+                                return const LoadingWidget();
+                              } else if (snapshot.hasError ||
+                                  !snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Icon(Icons.account_circle,
+                                    size: 100);
+                              }
 
-                            return isUploading
-                                ? const LoadingWidget()
-                                : CircleAvatar(
-                                    radius: 60,
-                                    backgroundImage:
-                                        NetworkImage(snapshot.data!)
-                                            as ImageProvider,
-                                    backgroundColor: Colors.grey[300],
-                                  );
-                          }),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: InkWell(
-                          onTap: isUploading ? null : showOptions,
-                          child: const CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.green,
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Colors.white,
-                              size: 20,
+                              return isUploading
+                                  ? const LoadingWidget()
+                                  : CircleAvatar(
+                                      radius: 60,
+                                      backgroundImage:
+                                          NetworkImage(snapshot.data!)
+                                              as ImageProvider,
+                                      backgroundColor: Colors.grey[300],
+                                    );
+                            }),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: isUploading ? null : showOptions,
+                            child: const CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.green,
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      initialValue: user.username,
+                      decoration: const InputDecoration(
+                        labelText: 'Nom d\'utilisateur',
+                        border: OutlineInputBorder(),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: user.username,
-                    decoration: const InputDecoration(
-                      labelText: 'Nom d\'utilisateur',
-                      border: OutlineInputBorder(),
+                      enabled: false,
                     ),
-                    enabled: false,
-                    style: const TextStyle(color: Colors.blueGrey),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: user.fullName,
-                    decoration: const InputDecoration(
-                      labelText: 'Nom complet',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      initialValue: user.fullName,
+                      decoration: const InputDecoration(
+                        labelText: 'Nom complet',
+                        border: OutlineInputBorder(),
+                      ),
+                      enabled: isInEditMode,
                     ),
-                    enabled: false,
-                    style: const TextStyle(color: Colors.blueGrey),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: user.email,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      initialValue: user.email,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      enabled: false,
                     ),
-                    enabled: false,
-                    style: const TextStyle(color: Colors.blueGrey),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: user.nationality,
-                    decoration: const InputDecoration(
-                      labelText: 'Nationalité',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Choisir un pays',
+                        border: OutlineInputBorder(),
+                      ),
+                      value: _selectedCountry,
+                      items: _countries.map((country) {
+                        return DropdownMenuItem<String>(
+                          value: country,
+                          child: Text(country),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCountry = value;
+                        });
+                      },
                     ),
-                    enabled: false,
-                    style: const TextStyle(color: Colors.blueGrey),
-                  )
-                ],
-              );
-            }));
+                    TextFormField(
+                      initialValue: user.nationality,
+                      decoration: const InputDecoration(
+                        labelText: 'Nationalité',
+                        border: OutlineInputBorder(),
+                      ),
+                      enabled: isInEditMode,
+                    ),
+                    const SizedBox(height: 20),
+                    Visibility(
+                        visible: isInEditMode,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.check),
+                                color: Colors.green),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isInEditMode = false;
+                                  });
+                                },
+                                icon: const Icon(Icons.close),
+                                color: Colors.red)
+                          ],
+                        ))
+                  ],
+                );
+              })),
+    );
   }
 }
