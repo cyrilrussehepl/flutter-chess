@@ -13,7 +13,7 @@ class Authentication {
 
   Authentication() {
     if (isInDebugMode) {
-      _email = 'Grace@example.com';
+      _email = 'Janja@example.com';
       _password = '1234567890';
     }
   }

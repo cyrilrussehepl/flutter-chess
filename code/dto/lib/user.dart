@@ -1,15 +1,22 @@
 class User {
   String email;
-  String id;
+  String username;
+  String fullName;
+  String nationality;
+  String profilePicture;
   List<String> friends;
   List<String> sentFriendRequests;
   List<String> receivedFriendRequests;
   List<String> sentChallengeRequests;
   List<String> receivedChallengeRequests;
 
+
   User({
     required this.email,
-    required this.id,
+    required this.username,
+    required this.fullName,
+    required this.nationality,
+    required this.profilePicture,
     required this.friends,
     required this.sentFriendRequests,
     required this.receivedFriendRequests,
@@ -20,7 +27,10 @@ class User {
   factory User.fromJson(Map<String, dynamic>? json) {
     return User(
       email: json?['email'] as String ?? '',
-      id: json?['id'] as String ?? '',
+      username: json?['username'] as String ?? '',
+      fullName: json?['fullName'] as String ?? '',
+      nationality: json?['nationality'] as String ?? '',
+      profilePicture: json?['profilePicture'] as String ?? '',
       friends: List<String>.from(json?['friends'] as List<dynamic>) ?? [],
       sentFriendRequests:
           List<String>.from(json?['sentFriendRequests'] as List<dynamic>) ?? [],
@@ -28,10 +38,10 @@ class User {
           List<String>.from(json?['receivedFriendRequests'] as List<dynamic>) ??
               [],
       sentChallengeRequests:
-          List<String>.from(json?['challengesSent'] as List<dynamic>) ??
+          List<String>.from(json?['sentChallengeRequests'] as List<dynamic>) ??
               [],
       receivedChallengeRequests:
-          List<String>.from(json?['challengesReceived'] as List<dynamic>) ??
+          List<String>.from(json?['receivedChallengeRequests'] as List<dynamic>) ??
               [],
     );
   }
@@ -39,17 +49,20 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       'email': email,
-      'id': id,
+      'username': username,
+      'fullName': fullName,
+      'nationality': nationality,
+      'profilePicture': profilePicture,
       'friends': friends,
       'sentFriendRequests': sentFriendRequests,
       'receivedFriendRequests': receivedFriendRequests,
-      'challengesSent':sentChallengeRequests,
-      'challengesReceived':receivedChallengeRequests,
+      'sentChallengeRequests':sentChallengeRequests,
+      'receivedChallengeRequests':receivedChallengeRequests,
     };
   }
 
   @override
   String toString() {
-    return 'User{email: $email, id: $id, friends: $friends, invitationSent: $sentFriendRequests, invitationReceived: $receivedFriendRequests, challengesSent: $sentChallengeRequests, challengesReceived: $receivedChallengeRequests}';
+    return 'User{email: $email, username: $username, friends: $friends, invitationSent: $sentFriendRequests, invitationReceived: $receivedFriendRequests, sentChallengeRequests: $sentChallengeRequests, receivedChallengeRequests: $receivedChallengeRequests}';
   }
 }

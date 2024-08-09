@@ -8,8 +8,8 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: SizedBox(
-        width: 150,
-        height: 150,
+        width: 125,
+        height: 125,
         child: Center(
           child: LoadingIndicator(
             indicatorType: Indicator.ballClipRotatePulse,

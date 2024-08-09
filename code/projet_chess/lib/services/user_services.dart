@@ -1,21 +1,60 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:dto/user.dart' as user_dto;
 
 class UserService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static final _userAuthentifie = FirebaseAuth.instance.currentUser;
   static final UserService _instance = UserService._internal();
+  static final FirebaseStorage _storage = FirebaseStorage.instance;
 
   UserService._internal();
 
   static UserService get instance => _instance;
+
+
 
   Future<user_dto.User> getUser() async {
     final userDoc =
         await _db.collection('users').doc(_userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
     return user;
+  }
+
+  Future<String> getProfilePictureUrl() async {
+    return await _storage.ref('profile_pictures/janjaTheGoat.jpg')
+        .getDownloadURL();
+  }
+
+  Stream<user_dto.User> getUserStream(){
+    return _db
+        .collection('users')
+        .doc(_userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        user_dto.User user = user_dto.User.fromJson(snapshot.data());
+        return user;
+      } else {
+        throw Stream.error('Erreur de chargement des données utilisateur');
+      }
+    });
+  }
+
+  Stream<String> getUserNationalityStream(){
+    return _db
+        .collection('users')
+        .doc(_userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        user_dto.User user = user_dto.User.fromJson(snapshot.data());
+        return user.nationality;
+      } else {
+        throw Stream.error('Erreur de chargement des données utilisateur');
+      }
+    });
   }
 
   Stream<List<String>> getFriendsListStream() {
@@ -98,7 +137,7 @@ class UserService {
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('id', isEqualTo: friendId)
+        .where('username', isEqualTo: friendId)
         .limit(1)
         .get();
 
@@ -120,9 +159,9 @@ class UserService {
     });
 
     await friendRef.update({
-      'friends': FieldValue.arrayRemove([user.id]),
-      'receivedChallengeRequests': FieldValue.arrayRemove([user.id]),
-      'sentChallengeRequests': FieldValue.arrayRemove([user.id]),
+      'friends': FieldValue.arrayRemove([user.username]),
+      'receivedChallengeRequests': FieldValue.arrayRemove([user.username]),
+      'sentChallengeRequests': FieldValue.arrayRemove([user.username]),
     });
   }
 
@@ -131,7 +170,7 @@ class UserService {
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('id', isEqualTo: friendId)
+        .where('username', isEqualTo: friendId)
         .limit(1)
         .get();
 
@@ -152,8 +191,8 @@ class UserService {
     });
 
     await friendRef.update({
-      'friends': FieldValue.arrayUnion([user.id]),
-      'sentFriendRequests': FieldValue.arrayRemove([user.id])
+      'friends': FieldValue.arrayUnion([user.username]),
+      'sentFriendRequests': FieldValue.arrayRemove([user.username])
     });
   }
 
@@ -162,7 +201,7 @@ class UserService {
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('id', isEqualTo: friendId)
+        .where('username', isEqualTo: friendId)
         .limit(1)
         .get();
 
@@ -182,7 +221,7 @@ class UserService {
     });
 
     await friendRef.update({
-      'sentFriendRequests': FieldValue.arrayRemove([user.id])
+      'sentFriendRequests': FieldValue.arrayRemove([user.username])
     });
   }
 
@@ -191,7 +230,7 @@ class UserService {
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('id', isEqualTo: friendId)
+        .where('username', isEqualTo: friendId)
         .limit(1)
         .get();
 
@@ -211,7 +250,7 @@ class UserService {
     });
 
     await friendRef.update({
-      'receivedChallengeRequests': FieldValue.arrayUnion([user.id]),
+      'receivedChallengeRequests': FieldValue.arrayUnion([user.username]),
     });
   }
 
@@ -220,7 +259,7 @@ class UserService {
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('id', isEqualTo: friendId)
+        .where('username', isEqualTo: friendId)
         .limit(1)
         .get();
 
@@ -240,7 +279,7 @@ class UserService {
     });
 
     await friendRef.update({
-      'receivedChallengeRequests': FieldValue.arrayRemove([user.id]),
+      'receivedChallengeRequests': FieldValue.arrayRemove([user.username]),
     });
   }
 
@@ -249,7 +288,7 @@ class UserService {
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('id', isEqualTo: friendId)
+        .where('username', isEqualTo: friendId)
         .limit(1)
         .get();
 
@@ -269,8 +308,10 @@ class UserService {
     });
 
     await friendRef.update({
-      'sentChallengeRequests': FieldValue.arrayRemove([user.id]),
+      'sentChallengeRequests': FieldValue.arrayRemove([user.username]),
     });
   }
+
+
 
 }
