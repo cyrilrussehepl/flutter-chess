@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/authentication/sign_up.dart';
 import 'package:projet_chess/services/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projet_chess/widgets/loading.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -14,6 +16,34 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController pwdController = TextEditingController();
   final authentication = Authentication();
   bool isLoading = false;
+  bool isSessionReset = false;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    firebaseAuth.signOut();
+    final User? user = firebaseAuth.currentUser;
+
+    if (user == null) {
+      setState(() {
+        isSessionReset = true;
+      });
+    }
+      firebaseAuth.authStateChanges().listen((User? user) {
+        if (mounted) {
+          setState(() {
+            isSessionReset = user == null;
+          });
+        }
+      });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +51,7 @@ class _SignInPageState extends State<SignInPage> {
       appBar: AppBar(
         title: const Text('Connexion'),
       ),
-      body: Padding(
+      body:!isSessionReset ? const LoadingWidget() : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

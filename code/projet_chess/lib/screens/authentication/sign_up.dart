@@ -7,6 +7,8 @@ class SignUpPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pwdController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final authentication = Authentication();
 
   @override
@@ -21,6 +23,24 @@ class SignUpPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            TextFormField(
+              controller: usernameController,
+              decoration: const InputDecoration(
+                labelText: 'Username',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 8.0),
+            TextFormField(
+              controller: fullNameController,
+              decoration: const InputDecoration(
+                labelText: 'Full Name',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 8.0),
             TextFormField(
               controller: emailController,
               decoration: const InputDecoration(
@@ -67,6 +87,8 @@ class SignUpPage extends StatelessWidget {
   void getInputs(BuildContext context) {
     authentication.email = emailController.text;
     authentication.password = pwdController.text;
+    authentication.username = usernameController.text;
+    authentication.fullName = fullNameController.text;
     authentication.context = context;
   }
 }

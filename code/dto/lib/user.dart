@@ -1,9 +1,9 @@
 class User {
   String email;
   String username;
+  String usernameLowerCase;
   String fullName;
   String nationality;
-  String profilePicture;
   List<String> friends;
   List<String> sentFriendRequests;
   List<String> receivedFriendRequests;
@@ -14,9 +14,9 @@ class User {
   User({
     required this.email,
     required this.username,
+    required this.usernameLowerCase,
     required this.fullName,
     required this.nationality,
-    required this.profilePicture,
     required this.friends,
     required this.sentFriendRequests,
     required this.receivedFriendRequests,
@@ -28,9 +28,9 @@ class User {
     return User(
       email: json?['email'] as String ?? '',
       username: json?['username'] as String ?? '',
+      usernameLowerCase: json?['usernameLowerCase'] as String ?? '',
       fullName: json?['fullName'] as String ?? '',
       nationality: json?['nationality'] as String ?? '',
-      profilePicture: json?['profilePicture'] as String ?? '',
       friends: List<String>.from(json?['friends'] as List<dynamic>) ?? [],
       sentFriendRequests:
           List<String>.from(json?['sentFriendRequests'] as List<dynamic>) ?? [],
@@ -50,9 +50,9 @@ class User {
     return {
       'email': email,
       'username': username,
+      'usernameLowerCase': usernameLowerCase,
       'fullName': fullName,
       'nationality': nationality,
-      'profilePicture': profilePicture,
       'friends': friends,
       'sentFriendRequests': sentFriendRequests,
       'receivedFriendRequests': receivedFriendRequests,

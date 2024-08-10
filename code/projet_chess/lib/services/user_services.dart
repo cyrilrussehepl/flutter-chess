@@ -5,20 +5,17 @@ import 'package:dto/user.dart' as user_dto;
 
 class UserService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
-  static final _userAuthentifie = FirebaseAuth.instance.currentUser;
   static final UserService _instance = UserService._internal();
   static final FirebaseStorage _storage = FirebaseStorage.instance;
-  static final DocumentReference _userRef = FirebaseFirestore.instance
-      .collection('users')
-      .doc(_userAuthentifie?.email);
 
   UserService._internal();
 
   static UserService get instance => _instance;
 
   Future<user_dto.User> getUser() async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
     return user;
   }
@@ -30,9 +27,10 @@ class UserService {
   }
 
   Stream<user_dto.User> getUserStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -61,9 +59,10 @@ class UserService {
 
 
   Stream<String> getUserNationalityStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -76,9 +75,10 @@ class UserService {
   }
 
   Stream<List<String>> getFriendsListStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -91,9 +91,10 @@ class UserService {
   }
 
   Stream<List<String>> getInvitationsSentStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -106,9 +107,10 @@ class UserService {
   }
 
   Stream<List<String>> getInvitationsReceivedStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -121,9 +123,10 @@ class UserService {
   }
 
   Stream<List<String>> getChallengesSentStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -136,9 +139,10 @@ class UserService {
   }
 
   Stream<List<String>> getChallengesReceivedStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
         .collection('users')
-        .doc(_userAuthentifie?.email)
+        .doc(userAuthentifie?.email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
@@ -151,6 +155,10 @@ class UserService {
   }
 
   Future<void> removeFriend(String friendId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
@@ -159,7 +167,7 @@ class UserService {
         .get();
 
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -168,7 +176,7 @@ class UserService {
       throw Future.error('error');
     }
 
-    await _userRef.update({
+    await userRef.update({
       'friends': FieldValue.arrayRemove([friendId]),
       'receivedChallengeRequests': FieldValue.arrayRemove([friendId]),
       'sentChallengeRequests': FieldValue.arrayRemove([friendId]),
@@ -182,6 +190,10 @@ class UserService {
   }
 
   Future<void> acceptFriendRequest(String friendId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
@@ -190,7 +202,7 @@ class UserService {
         .get();
 
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -199,7 +211,7 @@ class UserService {
       throw Future.error('error');
     }
 
-    await _userRef.update({
+    await userRef.update({
       'friends': FieldValue.arrayUnion([friendId]),
       'receivedFriendRequests': FieldValue.arrayRemove([friendId])
     });
@@ -211,6 +223,10 @@ class UserService {
   }
 
   Future<void> refuseFriendRequest(String friendId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
@@ -219,7 +235,7 @@ class UserService {
         .get();
 
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -228,7 +244,7 @@ class UserService {
       throw Future.error('error');
     }
 
-    await _userRef.update({
+    await userRef.update({
       'receivedFriendRequests': FieldValue.arrayRemove([friendId])
     });
 
@@ -237,16 +253,20 @@ class UserService {
     });
   }
 
-  Future<void> sendChallengeRequest(String friendId) async {
+  Future<void> sendFriendRequest(String username) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
-        .where('username', isEqualTo: friendId)
+        .where('username', isEqualTo: username)
         .limit(1)
         .get();
 
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+    await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -255,7 +275,38 @@ class UserService {
       throw Future.error('error');
     }
 
-    await _userRef.update({
+    await userRef.update({
+      'sentFriendRequests': FieldValue.arrayUnion([username])
+    });
+
+    await friendRef.update({
+      'receivedFriendRequests': FieldValue.arrayUnion([user.username])
+    });
+  }
+
+  Future<void> sendChallengeRequest(String friendId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
+    DocumentReference friendRef;
+    final QuerySnapshot querySnapshotFriend = await _db
+        .collection('users')
+        .where('username', isEqualTo: friendId)
+        .limit(1)
+        .get();
+
+    final userDoc =
+        await _db.collection('users').doc(userAuthentifie?.email).get();
+    user_dto.User user = user_dto.User.fromJson(userDoc.data());
+
+    if (querySnapshotFriend.docs.isNotEmpty) {
+      friendRef = querySnapshotFriend.docs.first.reference;
+    } else {
+      throw Future.error('error');
+    }
+
+    await userRef.update({
       'sentChallengeRequests': FieldValue.arrayUnion([friendId])
     });
 
@@ -265,6 +316,10 @@ class UserService {
   }
 
   Future<void> cancelChallengeRequest(String friendId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
@@ -273,7 +328,7 @@ class UserService {
         .get();
 
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -282,7 +337,7 @@ class UserService {
       throw Future.error('error');
     }
 
-    await _userRef.update({
+    await userRef.update({
       'sentChallengeRequests': FieldValue.arrayRemove([friendId])
     });
 
@@ -292,6 +347,10 @@ class UserService {
   }
 
   Future<void> refuseChallengeRequest(String friendId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
     DocumentReference friendRef;
     final QuerySnapshot querySnapshotFriend = await _db
         .collection('users')
@@ -300,7 +359,7 @@ class UserService {
         .get();
 
     final userDoc =
-        await _db.collection('users').doc(_userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -309,7 +368,7 @@ class UserService {
       throw Future.error('error');
     }
 
-    await _userRef.update({
+    await userRef.update({
       'receivedChallengeRequests': FieldValue.arrayRemove([friendId])
     });
 
@@ -319,7 +378,11 @@ class UserService {
   }
 
   void updateUser(String newFullName, String newNationality) async {
-    await _userRef.update({
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
+    await userRef.update({
       'fullName': newFullName,
       'nationality': newNationality
     });

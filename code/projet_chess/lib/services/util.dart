@@ -5,26 +5,30 @@ class Util {
     String msg = "Error";
     switch (errorCode) {
       case 'email-already-in-use':
-        msg = 'Un compte utilisant cette adresse mail existe déjà';
+        msg = 'Un compte utilisant cette adresse mail existe déjà.';
       case 'weak-password':
-        msg = 'Veuillez entrer un mot de passe de 6 caractères minimum';
+        msg = 'Veuillez entrer un mot de passe de 6 caractères minimum.';
       case 'empty-pwd':
-        msg = 'Veuillez entrer un mot de passe';
+        msg = 'Veuillez entrer un mot de passe.';
       case 'empty-email':
-        msg = 'Remplissez tous les champs';
+        msg = 'Remplissez tous les champs.';
       case 'invalid-email':
-        msg = 'Veuillez entrer une adresse mail valide';
+        msg = 'Veuillez entrer une adresse mail valide.';
       case 'user-not-found':
         msg =
-            'L\'adresse mail que vous avez entrée n\'est associée à aucun compte .';
+            'L\'adresse mail que vous avez entrée n\'est associée à aucun compte.';
       case 'wrong-password':
         msg = 'Mot de passe incorrect.';
       case 'too-many-requests':
         msg =
             'Vous avez fait trop de tentatives. Veuillez réessayer plus tard.';
       case 'invalid-credential':
-        msg = 'Adresse mail ou mot de passe incorrect';
-      default: msg = 'Error';
+        msg = 'Adresse mail ou mot de passe incorrect.';
+      case 'username-already-taken':
+        msg =
+            'Le nom d\'utilisateur entré est déjà utilisé. Veuillez en choisir un autre.';
+      default:
+        msg = 'Error';
     }
     showError(msg, context);
   }

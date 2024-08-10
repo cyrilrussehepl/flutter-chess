@@ -3,9 +3,9 @@ import 'package:dto/user.dart';
 List<User> users = [
   User(
       username: 'adam',
+      usernameLowerCase: 'adam',
       fullName: "Adam Ondra",
       nationality: "",
-      profilePicture: "gs://flutter-chess-1af50.appspot.com/janja_garnbret.jpg",
       email: "Adam@example.com",
       friends: ['janjaTheGoat', 'LightningBolt'],
       sentFriendRequests: [],
@@ -15,9 +15,9 @@ List<User> users = [
   ),
   User(
       username: 'janjaTheGoat',
+      usernameLowerCase: 'janjathegoat',
       fullName: "Janja Garnbret",
       nationality: "République Tchèque",
-      profilePicture: "",
       email: "Janja@example.com",
       friends: ['adam', 'antoine'],
       sentFriendRequests: ['LightningBolt', 'CabeiBusha'],
@@ -26,9 +26,9 @@ List<User> users = [
       receivedChallengeRequests:['antoine']),
   User(
       username: 'antoine',
+      usernameLowerCase: 'antoine',
       fullName: "Antoine Albeau",
       nationality: "",
-      profilePicture: "",
       email: "Antoine@example.com",
       friends: ['janjaTheGoat'],
       sentFriendRequests: [],
@@ -37,9 +37,9 @@ List<User> users = [
       receivedChallengeRequests:[]),
   User(
       username: 'LightningBolt',
+      usernameLowerCase: 'lightningbolt',
       fullName: "Usain Bolt",
       nationality: "",
-      profilePicture: "",
       email: "Usain@example.com",
       friends: ['adam', 'CabeiBusha'],
       sentFriendRequests: ['antoine'],
@@ -48,9 +48,9 @@ List<User> users = [
       receivedChallengeRequests:[]),
   User(
       username: 'MM',
+      usernameLowerCase: 'mm',
       fullName: "Magnus Mitbø",
       nationality: "",
-      profilePicture: "",
       email: "Magnus@example.com",
       friends: [],
       sentFriendRequests: ['janjaTheGoat'],
@@ -59,9 +59,9 @@ List<User> users = [
       receivedChallengeRequests:[]),
   User(
       username: 'CabeiBusha',
+      usernameLowerCase: 'cabeibusha',
       fullName: "Sarah-Quita Offringa",
       nationality: "",
-      profilePicture: "",
       email: "SarahQuita@example.com",
       friends: ['LightningBolt'],
       sentFriendRequests: ['MM'],
