@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/authentication/sign_up.dart';
 import 'package:projet_chess/services/authentication.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:projet_chess/services/util.dart';
-import '../main/main.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -66,19 +63,10 @@ class _SignInPageState extends State<SignInPage> {
       isLoading = true;
     });
     getInputs();
-    try {
-      authentication.signIn();
-      setState(() {
-        isLoading = false;
-      });
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const MainPage()));
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      Util.showAuthError(e.code, context);
-    }
+    authentication.signIn();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void openSignUpPage() {
@@ -89,6 +77,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void getInputs() {
+    authentication.context = context;
     authentication.email = emailController.text;
     authentication.password = pwdController.text;
   }

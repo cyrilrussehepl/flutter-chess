@@ -5,11 +5,11 @@ import '../screens/authentication/sign_in.dart';
 import '../screens/main/main.dart';
 
 class Authentication {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   String _email = '';
   String _password = '';
-  late final BuildContext _context;
-  static const bool isInDebugMode = true;
+  BuildContext? _context;
+  static const bool isInDebugMode = false;
 
   Authentication() {
     if (isInDebugMode) {
@@ -35,18 +35,29 @@ class Authentication {
   void signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      if (!_context.mounted) return;
-      Navigator.of(_context).pushReplacement(
+      if (!_context!.mounted) return;
+      Navigator.of(_context!).pushReplacement(
           MaterialPageRoute(builder: (context) => const SignInPage()));
     } catch (e) {
-      Util.showError('Impossible de se déconnecter', _context);
+      Util.showError('Impossible de se déconnecter', _context!);
     }
   }
 
   void signIn() async {
-    if (!inputsAreValid()) return;
-
-    await _auth.signInWithEmailAndPassword(email: _email, password: _password);
+    if (!inputsAreValid()) {
+      Util.showAuthError('empty-email', _context!);
+      return;
+    }
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: _email, password: _password);
+      Navigator.pushReplacement(
+          _context!, MaterialPageRoute(builder: (context) => const MainPage()));
+    } on FirebaseAuthException catch (e) {
+      Util.showAuthError(e.code, _context!);
+    } on ArgumentError catch (e) {
+      Util.showError(e.toString(), _context!);
+    }
   }
 
   void signUp() async {
@@ -60,30 +71,30 @@ class Authentication {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: _email, password: _password);
-      if (!_context.mounted) return;
-      Navigator.of(_context).pushReplacement(
+      if (!_context!.mounted) return;
+      Navigator.of(_context!).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainPage()));
     } on FirebaseAuthException catch (e) {
-      Util.showAuthError(e.code, _context);
+      Util.showAuthError(e.code, _context!);
     }
   }
 
   bool inputsAreValid() {
     if (emailIsEmpty()) {
-      Util.showAuthError('empty-email', _context);
+      Util.showAuthError('empty-email', _context!);
       return false;
     } else if (passwordIsEmpty()) {
-      Util.showAuthError('empty-pwd', _context);
+      Util.showAuthError('empty-pwd', _context!);
       return false;
     }
     return true;
   }
 
   bool emailIsEmpty() {
-    return _email == '';
+    return _email == '' || _email.isEmpty;
   }
 
   bool passwordIsEmpty() {
-    return _password == '';
+    return _password == '' || _password.isEmpty;
   }
 }

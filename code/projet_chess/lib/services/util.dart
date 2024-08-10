@@ -24,6 +24,7 @@ class Util {
             'Vous avez fait trop de tentatives. Veuillez réessayer plus tard.';
       case 'invalid-credential':
         msg = 'Adresse mail ou mot de passe incorrect';
+      default: msg = 'Error';
     }
     showError(msg, context);
   }

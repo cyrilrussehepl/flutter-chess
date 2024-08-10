@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_chess/screens/main/profile_tab.dart';
 import 'package:projet_chess/widgets/list_tile_actions.dart';
 
 enum ListType {
@@ -12,10 +13,7 @@ class ListViewCustom extends StatelessWidget {
   final List<String> list;
   final ListType listType;
 
-  const ListViewCustom(
-      {super.key,
-      required this.list,
-      required this.listType});
+  const ListViewCustom({super.key, required this.list, required this.listType});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +24,14 @@ class ListViewCustom extends StatelessWidget {
         itemCount: list.length,
         itemBuilder: (context, index) {
           return ListTile(
+            onTap: () {
+              if (listType == ListType.friendsList || listType == ListType.invitationsReceived || listType == ListType.invitationsSent || listType == ListType.challengesSent ) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Profile(username: list[index])));
+              }
+            },
             title: Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 16.0),
@@ -37,7 +43,10 @@ class ListViewCustom extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(list[index]), Row(children: tileActions(listType, list[index]))],
+                  children: [
+                    Text(list[index]),
+                    Row(children: tileActions(listType, list[index]))
+                  ],
                 )),
           );
         },
