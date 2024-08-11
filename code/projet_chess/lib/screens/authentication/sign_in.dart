@@ -27,7 +27,6 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<void> _checkAuthentication() async {
-    firebaseAuth.signOut();
     final User? user = firebaseAuth.currentUser;
 
     if (user == null) {
@@ -35,14 +34,15 @@ class _SignInPageState extends State<SignInPage> {
         isSessionReset = true;
       });
     }
-      firebaseAuth.authStateChanges().listen((User? user) {
-        if (mounted) {
-          setState(() {
-            isSessionReset = user == null;
-          });
-        }
-      });
+    firebaseAuth.signOut();
 
+    firebaseAuth.authStateChanges().listen((User? user) {
+      if (mounted) {
+        setState(() {
+          isSessionReset = user == null;
+        });
+      }
+    });
   }
 
   @override
@@ -51,40 +51,42 @@ class _SignInPageState extends State<SignInPage> {
       appBar: AppBar(
         title: const Text('Connexion'),
       ),
-      body:!isSessionReset ? const LoadingWidget() : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
+      body: !isSessionReset
+          ? const LoadingWidget()
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 8.0),
+                  TextFormField(
+                    controller: pwdController,
+                    decoration: const InputDecoration(
+                      labelText: 'Mot de passe',
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 24.0),
+                  ElevatedButton(
+                    onPressed: isLoading ? null : signIn,
+                    child: const Text('Se Connecter'),
+                  ),
+                  TextButton(
+                      onPressed: isLoading ? null : openSignUpPage,
+                      child: const Text("Créer un compte")),
+                ],
               ),
-              keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 8.0),
-            TextFormField(
-              controller: pwdController,
-              decoration: const InputDecoration(
-                labelText: 'Mot de passe',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-            ),
-            const SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: isLoading ? null : signIn,
-              child: const Text('Se Connecter'),
-            ),
-            TextButton(
-                onPressed: isLoading ? null : openSignUpPage,
-                child: const Text("Créer un compte")),
-          ],
-        ),
-      ),
     );
   }
 

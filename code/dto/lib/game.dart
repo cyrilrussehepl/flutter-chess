@@ -6,8 +6,8 @@ class Game {
   final String gameState; // "ongoing", "draw", "white_won", "black_won"
   final List<String> moves;
   final List<String?> boardState;
-  final DateTime createdAt;
-  final DateTime lastMoveAt;
+  // final DateTime createdAt;
+  // final DateTime lastMoveAt;
 
   Game({
     required this.gameId,
@@ -17,8 +17,8 @@ class Game {
     required this.gameState,
     required this.boardState,
     required this.moves,
-    required this.createdAt,
-    required this.lastMoveAt,
+    // required this.createdAt,
+    // required this.lastMoveAt,
   });
 
   factory Game.fromJson(Map<String, dynamic> json) {
@@ -30,8 +30,8 @@ class Game {
       gameState: json['gameState'],
       moves: List<String>.from(json['moves']),
       boardState: List<String?>.from(json['boardState']),
-      createdAt: json['createdAt'],
-      lastMoveAt: json['lastMoveAt'],
+      // createdAt: json['createdAt'],
+      // lastMoveAt: json['lastMoveAt'],
     );
   }
 
@@ -44,8 +44,8 @@ class Game {
       'gameState': gameState,
       'moves': moves,
       'boardState': boardState,
-      'createdAt': createdAt,
-      'lastMoveAt': lastMoveAt,
+      // 'createdAt': createdAt,
+      // 'lastMoveAt': lastMoveAt,
     };
   }
 }

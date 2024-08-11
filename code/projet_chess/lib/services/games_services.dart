@@ -1,13 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:dto/user.dart' as user_dto;
+import 'package:dto/game.dart';
 import 'user_services.dart';
 
 class GameService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static final GameService _instance = GameService._internal();
-  static final FirebaseStorage _storage = FirebaseStorage.instance;
   static String? username;
 
   GameService._internal();
@@ -19,6 +16,22 @@ class GameService {
     username = user.username;
   }
 
-
+  Stream<Game?> getGameStream(String gameId) {
+    print("oui");
+    return _db
+        .collection('games')
+        .doc(gameId)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        Game game = Game.fromJson(snapshot.data()!);
+        print("snapshot exists\n\n");
+        return game;
+      } else {
+        print("snapshot doesn't exist!\n\n");
+        return null;
+      }
+    });
+  }
 
   }

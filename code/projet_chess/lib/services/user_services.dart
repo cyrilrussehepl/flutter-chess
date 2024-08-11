@@ -1,3 +1,4 @@
+import 'package:dto/game_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -148,6 +149,38 @@ class UserService {
       if (snapshot.exists) {
         user_dto.User user = user_dto.User.fromJson(snapshot.data());
         return user.receivedChallengeRequests;
+      } else {
+        return [];
+      }
+    });
+  }
+
+  Stream<List<GameInfo>> getGamesOnGoingStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    return _db
+        .collection('users')
+        .doc(userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        user_dto.User user = user_dto.User.fromJson(snapshot.data());
+        return user.gamesOnGoing;
+      } else {
+        return [];
+      }
+    });
+  }
+
+  Stream<List<GameInfo>> getGamesOverStream() {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    return _db
+        .collection('users')
+        .doc(userAuthentifie?.email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        user_dto.User user = user_dto.User.fromJson(snapshot.data());
+        return user.gamesOver;
       } else {
         return [];
       }
@@ -387,4 +420,6 @@ class UserService {
       'nationality': newNationality
     });
   }
+
+
 }
