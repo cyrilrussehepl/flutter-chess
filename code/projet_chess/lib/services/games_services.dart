@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dto/game.dart';
 import 'user_services.dart';
@@ -34,4 +36,28 @@ class GameService {
     });
   }
 
+  Future<String> createGame(String username, String opponentUsername) async {
+    bool isUserWhite = Random().nextBool();
+
+    final newGame = Game(gameId: '',
+        playerWhite: isUserWhite ? username : opponentUsername,
+        playerBlack: !isUserWhite ? username : opponentUsername,
+        currentTurn: 'white',
+        gameState: 'ongoing',
+        boardState: [
+          'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r',
+          'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
+          null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null,
+          'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+          'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R',
+        ],
+        moves: []);
+    final docRef = await _db.collection('games').add(newGame.toJson());
+
+    return docRef.id;
   }
+
+}

@@ -7,6 +7,7 @@ enum ListType {
   invitationsReceived,
   invitationsSent,
   challengesSent,
+  challengeReceived,
   gamesList
 }
 
@@ -63,6 +64,8 @@ class ListViewCustom extends StatelessWidget {
         return cancelActions(item);
       case ListType.invitationsReceived:
         return invitationListActions(item);
+      case ListType.challengeReceived:
+        return challengeReceivedActions(item);
       default:
         return [];
     }

@@ -36,7 +36,7 @@ class InvitationsTab extends StatelessWidget {
             }
 
             return ListViewCustom(
-                list: snapshot.data!, listType: ListType.invitationsReceived,);
+                list: snapshot.data!, listType: ListType.challengeReceived,);
           },
         ),
         StreamBuilder(

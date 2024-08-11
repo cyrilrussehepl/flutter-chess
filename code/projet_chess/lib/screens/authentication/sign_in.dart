@@ -33,15 +33,14 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         isSessionReset = true;
       });
+      return;
     }
     firebaseAuth.signOut();
 
     firebaseAuth.authStateChanges().listen((User? user) {
-      if (mounted) {
         setState(() {
           isSessionReset = user == null;
         });
-      }
     });
   }
 
@@ -59,6 +58,19 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  const Image(
+                    image: AssetImage('assets/asyncChessLogo.png'),
+                    height: 150,
+                  ),
+                  const Center(
+                      child: Text(
+                    'AsyncChess',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueGrey),
+                  )),
+                  const SizedBox(height: 40.0),
                   TextFormField(
                     controller: emailController,
                     decoration: const InputDecoration(

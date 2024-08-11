@@ -33,11 +33,15 @@ class Util {
     showError(msg, context);
   }
 
-  static void showError(String msg, BuildContext context) {
+  static void showMsg(String msg, BuildContext context) {
     final snackBar = SnackBar(
         showCloseIcon: true,
         duration: const Duration(seconds: 10),
         content: Text(msg));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static void showError(String msg, BuildContext context) {
+    showMsg(msg, context);
   }
 }

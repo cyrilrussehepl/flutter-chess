@@ -58,7 +58,6 @@ class UserService {
     });
   }
 
-
   Stream<String> getUserNationalityStream() {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     return _db
@@ -299,7 +298,7 @@ class UserService {
         .get();
 
     final userDoc =
-    await _db.collection('users').doc(userAuthentifie?.email).get();
+        await _db.collection('users').doc(userAuthentifie?.email).get();
     user_dto.User user = user_dto.User.fromJson(userDoc.data());
 
     if (querySnapshotFriend.docs.isNotEmpty) {
@@ -379,6 +378,41 @@ class UserService {
     });
   }
 
+  Future<void> acceptChallengeRequest(String friendId, String gameId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
+    DocumentReference friendRef;
+    final QuerySnapshot querySnapshotFriend = await _db
+        .collection('users')
+        .where('username', isEqualTo: friendId)
+        .limit(1)
+        .get();
+
+    final userDoc =
+        await _db.collection('users').doc(userAuthentifie?.email).get();
+    user_dto.User user = user_dto.User.fromJson(userDoc.data());
+
+    if (querySnapshotFriend.docs.isNotEmpty) {
+      friendRef = querySnapshotFriend.docs.first.reference;
+    } else {
+      throw Future.error('error');
+    }
+
+    await userRef.update({
+      'receivedChallengeRequests': FieldValue.arrayRemove([friendId]),
+      'gamesOnGoing':
+          FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: friendId).toJson()])
+    });
+
+    await friendRef.update({
+      'sentChallengeRequests': FieldValue.arrayRemove([user.username]),
+      'gamesOnGoing': FieldValue.arrayUnion(
+          [GameInfo(gameId: gameId, opponent: user.username).toJson()])
+    });
+  }
+
   Future<void> refuseChallengeRequest(String friendId) async {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     final DocumentReference userRef = FirebaseFirestore.instance
@@ -415,11 +449,7 @@ class UserService {
     final DocumentReference userRef = FirebaseFirestore.instance
         .collection('users')
         .doc(userAuthentifie?.email);
-    await userRef.update({
-      'fullName': newFullName,
-      'nationality': newNationality
-    });
+    await userRef
+        .update({'fullName': newFullName, 'nationality': newNationality});
   }
-
-
 }

@@ -23,6 +23,19 @@ class SignUpPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            const Image(
+              image: AssetImage('assets/asyncChessLogo.png'),
+              height: 150,
+            ),
+            const Center(
+                child: Text(
+              'AsyncChess',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueGrey),
+            )),
+            const SizedBox(height: 40.0),
             TextFormField(
               controller: usernameController,
               decoration: const InputDecoration(

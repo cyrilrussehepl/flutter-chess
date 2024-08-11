@@ -18,8 +18,6 @@ List<Game> games = [
       'P', 'P', 'P', 'P', null, 'P', 'P', 'P',
       'R', null, 'B', 'Q', 'K', 'B', null, 'R',
     ],
-    createdAt: DateTime(2024, 8, 1, 14, 30),
-    lastMoveAt: DateTime(2024, 8, 2, 10, 15),
   ),
   Game(
     gameId: 'game2',
@@ -38,8 +36,6 @@ List<Game> games = [
       'P', null, 'P', 'P', null, 'P', 'P', 'P',
       'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R',
     ],
-    createdAt: DateTime(2024, 8, 1, 16, 45),
-    lastMoveAt: DateTime(2024, 8, 2, 12, 0),
   ),
   Game(
     gameId: 'game3',
@@ -58,7 +54,5 @@ List<Game> games = [
       'P', 'P', null, 'P', 'P', 'P', 'P', 'P',
       'R', 'N', 'B', 'Q', 'K', 'B', null, 'R',
     ],
-    createdAt: DateTime(2024, 8, 1, 18, 0),
-    lastMoveAt: DateTime(2024, 8, 2, 15, 30),
   ),
 ];
