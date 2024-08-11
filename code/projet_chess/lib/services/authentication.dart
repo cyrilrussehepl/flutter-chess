@@ -13,13 +13,24 @@ class Authentication {
   String _fullName = '';
   String _username = '';
   BuildContext? _context;
-  static const bool isInDebugMode = false;
+  static const bool isInDebugMode = true;
 
   Authentication() {
     if (isInDebugMode) {
       _email = 'Janja@example.com';
       _password = '1234567890';
+      return;
     }
+
+    if (isInDebugMode) {
+      _email = 'adam@example.com';
+      _password = '1234567890';
+    }
+
+    // if (isInDebugMode) {
+    //   _email = 'antoine@example.com';
+    //   _password = '1234567890';
+    // }
   }
 
   set email(String email) {
