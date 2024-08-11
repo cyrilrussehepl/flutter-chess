@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:projet_chess/services/games_services.dart';
 import 'package:projet_chess/widgets/chess_board.dart';
 import 'package:dto/game.dart';
 
 class GameScreen extends StatelessWidget {
   final Game game;
+  final GameService _gameService = GameService.instance;
 
-  const GameScreen({super.key, required this.game});
+  GameScreen({super.key, required this.game});
 
   @override
   Widget build(BuildContext context) {

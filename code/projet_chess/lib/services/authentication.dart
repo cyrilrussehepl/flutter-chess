@@ -58,7 +58,7 @@ class Authentication {
   void signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      if(FirebaseAuth.instance.currentUser !=null)return;
+      if (FirebaseAuth.instance.currentUser != null) return;
       if (!_context!.mounted) return;
       Navigator.of(_context!).pushReplacement(
           MaterialPageRoute(builder: (context) => const SignInPage()));
@@ -120,7 +120,9 @@ class Authentication {
         sentFriendRequests: [],
         receivedFriendRequests: [],
         sentChallengeRequests: [],
-        receivedChallengeRequests: []);
+        receivedChallengeRequests: [],
+        gamesOnGoing: [],
+        gamesOver: []);
     try {
       await FirebaseFirestore.instance
           .collection('users')

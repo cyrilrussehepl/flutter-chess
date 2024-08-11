@@ -6,7 +6,8 @@ enum ListType {
   friendsList,
   invitationsReceived,
   invitationsSent,
-  challengesSent
+  challengesSent,
+  gamesList
 }
 
 class ListViewCustom extends StatelessWidget {

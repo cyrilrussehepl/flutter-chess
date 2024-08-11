@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:projet_chess/services/games_services.dart';
 
 class GamesTab extends StatelessWidget {
   final TabController tabController;
+  final _gameServices = GameService.instance;
 
-  const GamesTab({super.key, required this.tabController});
+  GamesTab({super.key, required this.tabController});
 
   @override
   Widget build(BuildContext context) {
