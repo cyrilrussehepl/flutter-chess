@@ -57,7 +57,7 @@ class GamesTab extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => GameScreen(gameId: games[index].gameId)));
+                                builder: (context) => GameScreen(gameId: games[index].gameId, opponentUsername: games[index].opponent,)));
                     },
                     title: Container(
                         padding: const EdgeInsets.symmetric(

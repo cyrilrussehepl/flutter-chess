@@ -19,7 +19,6 @@ class GameService {
   }
 
   Stream<Game?> getGameStream(String gameId) {
-    print("oui");
     return _db
         .collection('games')
         .doc(gameId)
@@ -27,10 +26,8 @@ class GameService {
         .map((snapshot) {
       if (snapshot.exists) {
         Game game = Game.fromJson(snapshot.data()!);
-        print("snapshot exists\n\n");
         return game;
       } else {
-        print("snapshot doesn't exist!\n\n");
         return null;
       }
     });

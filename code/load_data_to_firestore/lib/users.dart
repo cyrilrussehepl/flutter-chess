@@ -24,7 +24,7 @@ List<User> users = [
       username: 'janjaTheGoat',
       usernameLowerCase: 'janjathegoat',
       fullName: "Janja Garnbret",
-      nationality: "République Tchèque",
+      nationality: "Czech Republic",
       email: "Janja@example.com",
       friends: [
         'adam',

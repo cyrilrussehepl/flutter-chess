@@ -48,4 +48,16 @@ class Game {
       // 'lastMoveAt': lastMoveAt,
     };
   }
+
+  @override
+  String toString() {
+    return 'Game(gameId: $gameId, '
+        'playerWhite: $playerWhite, '
+        'playerBlack: $playerBlack, '
+        'currentTurn: $currentTurn, '
+        'gameState: $gameState, '
+        'moves: ${moves.join(', ')}, '
+        'boardState: ${boardState.join(', ')})';
+  }
+
 }

@@ -3,20 +3,20 @@ import 'package:dto/game.dart';
 List<Game> games = [
   Game(
     gameId: 'game1',
-    playerWhite: 'adam',
-    playerBlack: 'janjaTheGoat',
+    playerWhite: 'janjaTheGoat',
+    playerBlack: 'adam',
     currentTurn: 'white',
     gameState: 'ongoing',
     moves: ['e2e4', 'e7e5', 'g1f3'],
     boardState: [
       'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r',
-      'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
-      null, null, null, null, 'N', null, null, null,
-      null, null, null, 'P', null, null, null, null,
+      'p', 'p', 'p', null, 'p', 'p', 'p', 'p',
       null, null, null, null, null, null, null, null,
+      null, null, null, 'p', null, null, null, null,
+      null, null, null, 'P', null, null, null, null,
       null, null, 'N', null, null, null, null, null,
-      'P', 'P', 'P', 'P', null, 'P', 'P', 'P',
-      'R', null, 'B', 'Q', 'K', 'B', null, 'R',
+      'P', 'P', 'P', null, 'P', 'P', 'P', 'P',
+      'R', null, 'B', 'Q', 'K', 'B', 'N', 'R',
     ],
   ),
   Game(
