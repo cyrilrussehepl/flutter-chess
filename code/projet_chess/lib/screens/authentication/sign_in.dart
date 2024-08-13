@@ -28,6 +28,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _checkAuthentication() async {
     final User? user = firebaseAuth.currentUser;
+    await firebaseAuth.signOut();
 
     if (user == null) {
       setState(() {
@@ -35,7 +36,6 @@ class _SignInPageState extends State<SignInPage> {
       });
       return;
     }
-    firebaseAuth.signOut();
 
     firebaseAuth.authStateChanges().listen((User? user) {
         setState(() {

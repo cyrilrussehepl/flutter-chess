@@ -1,8 +1,10 @@
-enum ChessPieceType {pawn,rook,bishop,knight,king,queen}
+enum ChessPieceType { pawn, rook, bishop, knight, king, queen }
 
-class ChessPiece{
+class ChessPiece {
   final ChessPieceType type;
   final String imagePath;
   final bool isWhite;
-  const ChessPiece({required this.type,required this.isWhite,required this.imagePath});
+
+  const ChessPiece(
+      {required this.type, required this.isWhite, required this.imagePath});
 }

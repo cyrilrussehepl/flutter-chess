@@ -37,19 +37,8 @@ class GameScreen extends StatelessWidget {
             body: Column(
               children: [
                 if (game.gameState == 'ongoing')
-                  Container(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Trait aux ' +
-                            (game.currentTurn == 'white' ? 'blancs' : 'noirs') +
-                            (((game.currentTurn == 'white' &&
-                                        game.playerWhite != opponentUsername) ||
-                                    (game.currentTurn == 'black' &&
-                                        game.playerBlack != opponentUsername))
-                                ? '\nÀ vous de jouer'
-                                : '\nEn attente du tour de votre adversaire...'),
-                      )),
-                if (game.gameState != 'ongoing')
+                  buildTurnInfo(game)
+                else
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
@@ -60,12 +49,35 @@ class GameScreen extends StatelessWidget {
                   ),
                 Expanded(
                   child: Center(
-                    child: ChessGame(game: game),
+                    child: ChessGame(
+                        key: ValueKey(game.gameState + game.currentTurn),
+                        game: game,
+                        opponentUsername: opponentUsername),
                   ),
                 ),
               ],
             ),
           );
         });
+  }
+
+  Widget buildTurnInfo(Game game) {
+    final isYourTurn = (game.currentTurn == 'white' &&
+            game.playerWhite != opponentUsername) ||
+        (game.currentTurn == 'black' && game.playerBlack != opponentUsername);
+    final turnText =
+        'Trait aux ' + (game.currentTurn == 'white' ? 'blancs' : 'noirs');
+    final statusText = isYourTurn
+        ? ' À vous de jouer'
+        : 'En attente du tour de votre adversaire...';
+
+    return Container(
+      color: Colors.blueGrey[50],
+        padding: const EdgeInsets.all(16.0),
+        alignment: Alignment.center,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text('$turnText'), Text('$statusText')
+        ]));
   }
 }

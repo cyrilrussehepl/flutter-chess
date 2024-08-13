@@ -35,8 +35,8 @@ class GameService {
 
   Future<String> createGame(String username, String opponentUsername) async {
     bool isUserWhite = Random().nextBool();
-
-    final newGame = Game(gameId: '',
+    final docRef = await _db.collection('games').doc();
+    final newGame = Game(gameId: docRef.id,
         playerWhite: isUserWhite ? username : opponentUsername,
         playerBlack: !isUserWhite ? username : opponentUsername,
         currentTurn: 'white',
@@ -52,9 +52,21 @@ class GameService {
           'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R',
         ],
         moves: []);
-    final docRef = await _db.collection('games').add(newGame.toJson());
+
+    docRef.set(newGame.toJson());
 
     return docRef.id;
   }
+
+  void makeAMove(Game game) async {
+    _db.collection('games')
+        .doc(game.gameId)
+        .set(game.toJson());
+
+    if(game.gameState!='onGoing')
+      UserService.instance.updateGameOver(game.gameId);
+  }
+
+
 
 }

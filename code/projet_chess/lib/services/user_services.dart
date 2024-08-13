@@ -413,6 +413,41 @@ class UserService {
     });
   }
 
+  void updateGameOver(String gameId) async {
+    final userAuthentifie = FirebaseAuth.instance.currentUser;
+    final DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userAuthentifie?.email);
+    final userDoc = await _db.collection('users').doc(userAuthentifie?.email).get();
+    user_dto.User user = user_dto.User.fromJson(userDoc.data());
+    
+    GameInfo gameInfoUser = user.gamesOnGoing.firstWhere((game)=>game.gameId == gameId);
+
+    DocumentReference friendRef;
+    final QuerySnapshot querySnapshotFriend = await _db
+        .collection('users')
+        .where('username', isEqualTo: gameInfoUser.opponent)
+        .limit(1)
+        .get();
+    if (querySnapshotFriend.docs.isNotEmpty) {
+      friendRef = querySnapshotFriend.docs.first.reference;
+    } else {
+      throw Future.error('error');
+    }
+
+    await userRef.update({
+      'gamesOnGoing':
+      FieldValue.arrayRemove([GameInfo(gameId: gameId, opponent: gameInfoUser.opponent).toJson()]),
+      'gamesOver':FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: gameInfoUser.opponent).toJson()]),
+    });
+
+    await friendRef.update({
+      'gamesOnGoing':
+      FieldValue.arrayRemove([GameInfo(gameId: gameId, opponent: user.username).toJson()]),
+      'gamesOver':FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: user.username).toJson()]),
+    });
+  }
+
   Future<void> refuseChallengeRequest(String friendId) async {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     final DocumentReference userRef = FirebaseFirestore.instance
@@ -444,6 +479,8 @@ class UserService {
     });
   }
 
+
+
   void updateUser(String newFullName, String newNationality) async {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     final DocumentReference userRef = FirebaseFirestore.instance
@@ -452,4 +489,6 @@ class UserService {
     await userRef
         .update({'fullName': newFullName, 'nationality': newNationality});
   }
+
+
 }
