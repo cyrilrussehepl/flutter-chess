@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projet_chess/services/authentication.dart';
+import 'package:projet_chess/services/authentication_services.dart';
 
 class LogoutButton extends StatelessWidget {
   final authentication = Authentication();

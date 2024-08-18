@@ -1,5 +1,4 @@
-import 'package:projet_chess/widgets/chess/components/pieces.dart';
-import 'package:projet_chess/widgets/chess/values/colors/colors.dart';
+import 'package:projet_chess/widgets/chess/pieces.dart';
 import 'package:flutter/material.dart';
 
 class Square extends StatelessWidget {
@@ -8,6 +7,8 @@ class Square extends StatelessWidget {
   final bool isValideMove;
   final ChessPiece? piece;
   final void Function() onTap;
+  static var backgroundColor = const Color(0xff91908e);
+  static var foregroundColor = const Color(0xff6f6e6c);
 
   const Square(
       {super.key,

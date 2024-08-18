@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/main/profile_tab.dart';
-import 'package:projet_chess/widgets/list_tile_actions.dart';
+import 'package:projet_chess/widgets/custom_list/list_tile_actions.dart';
 
 enum ListType {
   friendsList,

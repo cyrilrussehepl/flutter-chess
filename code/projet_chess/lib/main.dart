@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/authentication/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'style/color.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,51 +21,51 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Login',
       theme: ThemeData(
           primarySwatch: Colors.grey,
-          primaryColor: Colors.green,
+          primaryColor: mainColor,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            selectedItemColor: Colors.green,
-            backgroundColor: Colors.blueGrey[50],
+            selectedItemColor: mainColor,
+            backgroundColor: secondaryBackgroundColor,
             unselectedItemColor: Colors.grey,
           ),
           tabBarTheme: const TabBarTheme(
-            indicatorColor: Colors.green,
-            labelColor: Colors.green,
+            indicatorColor: mainColor,
+            labelColor: mainColor,
           ),
           appBarTheme: AppBarTheme(
-            color: Colors.blueGrey[50],
+            color: secondaryBackgroundColor,
             titleTextStyle: TextStyle(
-              color: Colors.green.withOpacity(0.8),
+              color: mainColor.withOpacity(0.8),
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
             iconTheme: const IconThemeData(
-              color: Colors.green,
+              color: mainColor,
             ),
             elevation: 0,
           ),
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
+              backgroundColor: mainColor,
               foregroundColor: Colors.white,
             ),
           ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
-              foregroundColor: Colors.green,
+              foregroundColor: mainColor,
             ),
           ),
           inputDecorationTheme: const InputDecorationTheme(
-            labelStyle: TextStyle(color: Colors.green),
+            labelStyle: TextStyle(color: mainColor),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green),
+              borderSide: BorderSide(color: mainColor),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
           searchBarTheme: SearchBarThemeData(
-              backgroundColor: WidgetStateProperty.all(Colors.blueGrey[50]))),
+              backgroundColor: WidgetStateProperty.all(secondaryBackgroundColor))),
       home: const SignInPage(),
     );
   }

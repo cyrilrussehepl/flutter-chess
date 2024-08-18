@@ -1,6 +1,6 @@
 import 'package:dto/game_info.dart';
 import 'package:flutter/material.dart';
-import 'package:projet_chess/screens/main/game.dart';
+import 'package:projet_chess/screens/game/game.dart';
 import 'package:projet_chess/services/user_services.dart';
 import 'package:projet_chess/widgets/loading.dart';
 

@@ -1,9 +1,7 @@
 import 'package:dto/game.dart';
 import 'package:projet_chess/services/games_services.dart';
-import 'package:projet_chess/widgets/chess/components/deadPiece.dart';
-import 'package:projet_chess/widgets/chess/components/pieces.dart';
-import 'package:projet_chess/widgets/chess/components/square.dart';
-import 'package:projet_chess/widgets/chess/helper/helper_methodes.dart';
+import 'package:projet_chess/widgets/chess/pieces.dart';
+import 'package:projet_chess/widgets/chess/square.dart';
 import 'package:flutter/material.dart';
 
 class ChessGame extends StatefulWidget {
@@ -198,7 +196,6 @@ class _ChessGameState extends State<ChessGame> {
     return boardString;
   }
 
-  //TODO: implement en passant rules and castle
   List<List<int>> checkValideMoves(int row, int col, ChessPiece? piece) {
     List<List<int>> candidateMoves = [];
 
@@ -400,7 +397,6 @@ class _ChessGameState extends State<ChessGame> {
     return realValidMoves;
   }
 
-  //TODO: implement pawn promotions
   void movePieces(int newRow, int newCol) {
     // If the new spot has enemy on it
     if (board[newRow][newCol] != null) {
@@ -553,15 +549,15 @@ class _ChessGameState extends State<ChessGame> {
     return true;
   }
 
-  void resetGame() {
-    Navigator.pop(context);
-    _initializeBoard();
-    checkStatus = false;
-    whitePiecesTaken.clear();
-    blackPiecesTaken.clear();
-    whiteKingPosition = [7, 4];
-    blackKingPosition = [0, 4];
-    setState(() {});
+  bool isWhite(index) {
+    int x = index ~/ 8;
+    int y = index % 8;
+    bool isWhite = (x + y) % 2 == 0;
+    return isWhite;
+  }
+
+  bool isInBoard(int row, int col) {
+    return row >= 0 && row < 8 && col >= 0 && col < 8;
   }
 
   @override
@@ -570,20 +566,6 @@ class _ChessGameState extends State<ChessGame> {
       backgroundColor: Colors.grey,
       body: Column(
         children: [
-          Expanded(
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 8,
-              ),
-              itemCount: whitePiecesTaken.length,
-              itemBuilder: (BuildContext context, int index) {
-                return DeadPiece(
-                    imagePath: whitePiecesTaken[index].imagePath,
-                    isWhite: whitePiecesTaken[index].isWhite);
-              },
-            ),
-          ),
           //check test
           Text(checkStatus ? "Check" : ""),
           Expanded(
@@ -615,20 +597,6 @@ class _ChessGameState extends State<ChessGame> {
             ),
           ),
           Text(checkStatus ? "Check" : ""),
-          Expanded(
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 8,
-              ),
-              itemCount: blackPiecesTaken.length,
-              itemBuilder: (BuildContext context, int index) {
-                return DeadPiece(
-                    imagePath: blackPiecesTaken[index].imagePath,
-                    isWhite: blackPiecesTaken[index].isWhite);
-              },
-            ),
-          ),
         ],
       ),
     );

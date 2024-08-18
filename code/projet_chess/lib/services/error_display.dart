@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Util {
+class ErrorDisplayCustom {
   static void showAuthError(String errorCode, BuildContext context) {
     String msg = "Error";
     switch (errorCode) {
