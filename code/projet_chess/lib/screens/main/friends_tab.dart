@@ -43,7 +43,8 @@ class FriendsTabState extends State<FriendsTab> {
         .where((user) =>
             !currentUser.friends.contains(user.username) &&
             !currentUser.sentFriendRequests.contains(user.username) &&
-            !currentUser.receivedFriendRequests.contains(user.username))
+            !currentUser.receivedFriendRequests.contains(user.username)&&
+            currentUser.username != user.username)
         .toList();
   }
 

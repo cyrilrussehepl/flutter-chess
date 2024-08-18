@@ -285,7 +285,6 @@ class UserService {
     });
   }
 
-  //TODO: pas à soi-même
   Future<void> sendFriendRequest(String username) async {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     final DocumentReference userRef = FirebaseFirestore.instance

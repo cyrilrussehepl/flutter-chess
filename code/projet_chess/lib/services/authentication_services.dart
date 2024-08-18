@@ -16,11 +16,11 @@ class Authentication {
   static const bool isInDebugMode = true;
 
   Authentication() {
-    // if (isInDebugMode) {
-    //   _email = 'Janja@example.com';
-    //   _password = '1234567890';
-    //   return;
-    // }
+    if (isInDebugMode) {
+      _email = 'Janja@example.com';
+      _password = '1234567890';
+      return;
+    }
 
     if (isInDebugMode) {
       _email = 'antoine@example.com';
