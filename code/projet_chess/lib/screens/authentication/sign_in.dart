@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/authentication/sign_up.dart';
-import 'package:projet_chess/services/authentication.dart';
+import 'package:projet_chess/services/authentication_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projet_chess/widgets/loading.dart';
 
@@ -38,9 +38,9 @@ class _SignInPageState extends State<SignInPage> {
     }
 
     firebaseAuth.authStateChanges().listen((User? user) {
-        setState(() {
-          isSessionReset = user == null;
-        });
+      setState(() {
+        isSessionReset = user == null;
+      });
     });
   }
 
@@ -52,53 +52,57 @@ class _SignInPageState extends State<SignInPage> {
       ),
       body: !isSessionReset
           ? const LoadingWidget()
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const Image(
-                    image: AssetImage('assets/asyncChessLogo.png'),
-                    height: 150,
-                  ),
-                  const Center(
-                      child: Text(
-                    'AsyncChess',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey),
-                  )),
-                  const SizedBox(height: 40.0),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+          : SingleChildScrollView(
+              child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height * 0.8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        const Image(
+                          image: AssetImage('assets/asyncChessLogo.png'),
+                          height: 150,
+                        ),
+                        const Center(
+                            child: Text(
+                          'AsyncChess',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                        )),
+                        const SizedBox(height: 40.0),
+                        TextFormField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: pwdController,
+                          decoration: const InputDecoration(
+                            labelText: 'Mot de passe',
+                            border: OutlineInputBorder(),
+                          ),
+                          obscureText: true,
+                        ),
+                        const SizedBox(height: 24.0),
+                        ElevatedButton(
+                          onPressed: isLoading ? null : signIn,
+                          child: const Text('Se Connecter'),
+                        ),
+                        TextButton(
+                            onPressed: isLoading ? null : openSignUpPage,
+                            child: const Text("Créer un compte")),
+                      ],
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: pwdController,
-                    decoration: const InputDecoration(
-                      labelText: 'Mot de passe',
-                      border: OutlineInputBorder(),
-                    ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 24.0),
-                  ElevatedButton(
-                    onPressed: isLoading ? null : signIn,
-                    child: const Text('Se Connecter'),
-                  ),
-                  TextButton(
-                      onPressed: isLoading ? null : openSignUpPage,
-                      child: const Text("Créer un compte")),
-                ],
-              ),
-            ),
+                  ))),
     );
   }
 
