@@ -13,29 +13,29 @@ class Authentication {
   String _fullName = '';
   String _username = '';
   BuildContext? _context;
-  static const bool isInDebugMode = true;
+  static const bool isInDebugMode = false;
 
   Authentication() {
-    if (isInDebugMode) {
-      _email = 'Janja@example.com';
-      _password = '1234567890';
-      return;
-    }
-
-    if (isInDebugMode) {
-      _email = 'antoine@example.com';
-      _password = '1234567890';
-    }
+    // if (isInDebugMode) {
+    //   _email = 'Janja@example.com';
+    //   _password = '1234567890';
+    //   return;
+    // }
+    //
+    // if (isInDebugMode) {
+    //   _email = 'antoine@example.com';
+    //   _password = '1234567890';
+    // }
 
   }
 
   set email(String email) {
-    if (isInDebugMode) return;
+    // if (isInDebugMode) return;
     _email = email;
   }
 
   set password(String password) {
-    if (isInDebugMode) return;
+    // if (isInDebugMode) return;
     _password = password;
   }
 
@@ -65,7 +65,6 @@ class Authentication {
 
   void signIn() async {
     if (!inputsAreValid()) {
-      ErrorDisplayCustom.showAuthError('empty-email', _context!);
       return;
     }
     try {
@@ -81,10 +80,11 @@ class Authentication {
   }
 
   void signUp() async {
-    if (isInDebugMode) {
-      signIn();
-      return;
-    } else if (!inputsAreValid()) {
+    // if (isInDebugMode) {
+    //   signIn();
+    //   return;
+    // } else
+      if (!inputsAreValid()) {
       return;
     }
 

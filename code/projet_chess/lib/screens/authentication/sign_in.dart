@@ -107,14 +107,10 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void signIn() async {
-    setState(() {
-      isLoading = true;
-    });
+    isLoading = true;
     getInputs();
     authentication.signIn();
-    setState(() {
-      isLoading = false;
-    });
+    isLoading = false;
   }
 
   void openSignUpPage() {
@@ -126,6 +122,8 @@ class _SignInPageState extends State<SignInPage> {
 
   void getInputs() {
     authentication.context = context;
+    print(emailController.text);
+    print(pwdController.text);
     authentication.email = emailController.text;
     authentication.password = pwdController.text;
   }

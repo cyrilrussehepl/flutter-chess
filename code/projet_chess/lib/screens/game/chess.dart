@@ -161,33 +161,31 @@ class _ChessGameState extends State<ChessGame> {
         checkRealValideMoves(selectedRow, selectedCol, selectedPiece, true);
   }
 
-  List<String?> boardToString(){
-
+  List<String?> boardToString() {
     List<String?> boardString = [];
 
-    for(var pieceList in board){
-      for(ChessPiece? piece in pieceList){
-        if(piece==null) {
+    for (var pieceList in board) {
+      for (ChessPiece? piece in pieceList) {
+        if (piece == null) {
           boardString.add(null);
           continue;
         }
         String pieceLetter;
-        switch(piece.type){
+        switch (piece.type) {
           case ChessPieceType.bishop:
             pieceLetter = 'b';
-            case ChessPieceType.knight:
+          case ChessPieceType.knight:
             pieceLetter = 'n';
-            case ChessPieceType.rook:
+          case ChessPieceType.rook:
             pieceLetter = 'r';
-            case ChessPieceType.pawn:
+          case ChessPieceType.pawn:
             pieceLetter = 'p';
-            case ChessPieceType.queen:
+          case ChessPieceType.queen:
             pieceLetter = 'q';
-            case ChessPieceType.king:
+          case ChessPieceType.king:
             pieceLetter = 'k';
         }
-        if(piece.isWhite)
-          pieceLetter = pieceLetter.toUpperCase();
+        if (piece.isWhite) pieceLetter = pieceLetter.toUpperCase();
 
         boardString.add(pieceLetter);
       }
@@ -375,7 +373,8 @@ class _ChessGameState extends State<ChessGame> {
     return candidateMoves;
   }
 
-  List<List<int>> checkRealValideMoves(int row, int col, ChessPiece? piece, bool checkSimulation) {
+  List<List<int>> checkRealValideMoves(
+      int row, int col, ChessPiece? piece, bool checkSimulation) {
     List<List<int>> realValidMoves = [];
     List<List<int>> candidatMoves = checkValideMoves(
       row,
@@ -438,14 +437,14 @@ class _ChessGameState extends State<ChessGame> {
     });
 
     if (isCheckMate(!isWhiteTurn)) {
-      gameState = isWhiteTurn?'white_won':'black_won';
+      gameState = isWhiteTurn ? 'white_won' : 'black_won';
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
                 title: const Text("Check Mate !"),
                 actions: [
                   TextButton(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
                       },
                       child: const Center(
@@ -462,7 +461,7 @@ class _ChessGameState extends State<ChessGame> {
         gameId: game.gameId,
         playerWhite: game.playerWhite,
         playerBlack: game.playerBlack,
-        currentTurn: isWhiteTurn?'white':'black',
+        currentTurn: isWhiteTurn ? 'white' : 'black',
         gameState: gameState,
         boardState: boardToString(),
         moves: game.moves);
@@ -495,7 +494,8 @@ class _ChessGameState extends State<ChessGame> {
     return false; // King is not in check
   }
 
-  bool simulatedMoveIsSafe(ChessPiece piece, int startRow, int startCol, int endRow, int endCol) {
+  bool simulatedMoveIsSafe(
+      ChessPiece piece, int startRow, int startCol, int endRow, int endCol) {
     // Save the current board state
     ChessPiece? originalDestinationPiece = board[endRow][endCol];
     // If the piece is the king we gonna save the current position and update to the new one
@@ -563,41 +563,37 @@ class _ChessGameState extends State<ChessGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
-      body: Column(
-        children: [
-          //check test
-          Text(checkStatus ? "Check" : ""),
-          Expanded(
-            flex: 3,
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 8,
-              ),
-              itemCount: 8 * 8,
-              itemBuilder: (BuildContext context, int index) {
-                int row = index ~/ 8;
-                int col = index % 8;
-                bool isSelected = selectedRow == row && selectedCol == col;
-                bool isValide = false;
-                for (var position in valideMoves) {
-                  if (position[0] == row && position[1] == col) {
-                    isValide = true;
-                  }
-                }
-                return Square(
-                  isWhite: isWhite(index),
-                  piece: board[row][col],
-                  isSelected: isSelected,
-                  onTap: () => isUserTurn ? pieceSelected(row, col) : null,
-                  isValideMove: isValide,
-                );
-              },
+      backgroundColor: Colors.grey[700],
+      body: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 420,
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 8,
             ),
+            itemCount: 8 * 8,
+            itemBuilder: (BuildContext context, int index) {
+              int row = index ~/ 8;
+              int col = index % 8;
+              bool isSelected = selectedRow == row && selectedCol == col;
+              bool isValide = false;
+              for (var position in valideMoves) {
+                if (position[0] == row && position[1] == col) {
+                  isValide = true;
+                }
+              }
+              return Square(
+                isWhite: isWhite(index),
+                piece: board[row][col],
+                isSelected: isSelected,
+                onTap: () => isUserTurn ? pieceSelected(row, col) : null,
+                isValideMove: isValide,
+              );
+            },
           ),
-          Text(checkStatus ? "Check" : ""),
-        ],
+        ),
       ),
     );
   }

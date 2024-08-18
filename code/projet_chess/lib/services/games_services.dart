@@ -63,7 +63,7 @@ class GameService {
         .doc(game.gameId)
         .set(game.toJson());
 
-    if(game.gameState!='onGoing')
+    if(game.gameState!='ongoing')
       UserService.instance.updateGameOver(game.gameId);
   }
 
