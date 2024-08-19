@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dto/game_info.dart';
 import 'package:dto/user.dart' as user_dto;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -499,4 +502,13 @@ class UserService {
         .update({'fullName': newFullName, 'nationality': newNationality});
   }
 
+  Future<UploadTask> updateImage(XFile? pickedFile) async {
+    user_dto.User user = await getUser();
+    final uploadTask = _storage
+        .ref()
+        .child('profile_pictures/${user.username}.jpg')
+        .putFile(File(pickedFile!.path));
+
+    return uploadTask;
+  }
 }
