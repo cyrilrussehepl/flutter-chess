@@ -42,4 +42,9 @@ class AppTextStyles {
   static const TextStyle label = TextStyle(
     color: mainColor,
   );
+
+  static const TextStyle gameHeading = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+  );
 }
