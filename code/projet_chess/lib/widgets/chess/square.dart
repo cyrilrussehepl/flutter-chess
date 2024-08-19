@@ -1,5 +1,5 @@
-import 'package:projet_chess/widgets/chess/pieces.dart';
 import 'package:flutter/material.dart';
+import 'package:projet_chess/widgets/chess/pieces.dart';
 
 class Square extends StatelessWidget {
   final bool isWhite;
@@ -31,16 +31,15 @@ class Square extends StatelessWidget {
       boxBorder = Border.all(color: Colors.black.withOpacity(1), width: 0.03);
     } else {
       squareColor = isWhite ? foregroundColor : backgroundColor;
-      boxBorder = Border.all(color: Colors.black.withOpacity(0.5), width: 0.001);
+      boxBorder =
+          Border.all(color: Colors.black.withOpacity(0.5), width: 0.001);
     }
 
     return InkWell(
       onTap: onTap,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.5,
-        decoration: BoxDecoration(
-            color: squareColor,
-            border: boxBorder),
+        decoration: BoxDecoration(color: squareColor, border: boxBorder),
         child: piece != null
             ? Center(
                 child: SizedBox(

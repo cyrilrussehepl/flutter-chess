@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_chess/screens/authentication/sign_up.dart';
 import 'package:projet_chess/services/authentication_services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projet_chess/widgets/loading.dart';
 
 class SignInPage extends StatefulWidget {
+  static const routeName = '/sign_in';
+
   const SignInPage({super.key});
 
   @override
@@ -114,10 +116,12 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void openSignUpPage() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => SignUpPage()),
-    );
+    Navigator.pushNamed(context, SignUpPage.routeName);
+
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => SignUpPage()),
+    // );
   }
 
   void getInputs() {

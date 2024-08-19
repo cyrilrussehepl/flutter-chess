@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
-import 'screens/authentication/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:projet_chess/routes.dart';
+
 import 'firebase_options.dart';
+import 'screens/authentication/sign_in.dart';
 import 'style/color.dart';
 
 void main() async {
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Login',
+      routes: routes,
       theme: ThemeData(
           primarySwatch: Colors.grey,
           primaryColor: mainColor,

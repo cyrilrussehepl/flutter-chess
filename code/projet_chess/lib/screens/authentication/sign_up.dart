@@ -3,6 +3,8 @@ import 'package:projet_chess/screens/authentication/sign_in.dart';
 import 'package:projet_chess/services/authentication_services.dart';
 
 class SignUpPage extends StatelessWidget {
+  static const routeName = '/sign_up';
+
   SignUpPage({super.key});
 
   final TextEditingController emailController = TextEditingController();

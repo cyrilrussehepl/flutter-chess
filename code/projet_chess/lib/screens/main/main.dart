@@ -4,10 +4,12 @@ import 'package:projet_chess/screens/main/friends_tab.dart';
 import 'package:projet_chess/screens/main/games_tab.dart';
 import 'package:projet_chess/screens/main/invitations_tab.dart';
 import 'package:projet_chess/screens/main/profile_tab.dart';
-import 'package:projet_chess/widgets/logout_button.dart';
 import 'package:projet_chess/widgets/loading.dart';
+import 'package:projet_chess/widgets/logout_button.dart';
 
 class MainPage extends StatefulWidget {
+  static const routeName = '/main';
+
   const MainPage({super.key});
 
   @override
