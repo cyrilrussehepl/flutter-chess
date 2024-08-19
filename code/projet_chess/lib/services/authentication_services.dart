@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dto/user.dart' as user_dto;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_chess/services/error_display.dart';
+
 import '../screens/authentication/sign_in.dart';
 import '../screens/main/main.dart';
-import 'package:dto/user.dart' as user_dto;
 
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,26 +17,20 @@ class Authentication {
   static const bool isInDebugMode = false;
 
   Authentication() {
-    // if (isInDebugMode) {
-    //   _email = 'Janja@example.com';
-    //   _password = '1234567890';
-    //   return;
-    // }
-    //
-    // if (isInDebugMode) {
-    //   _email = 'antoine@example.com';
-    //   _password = '1234567890';
-    // }
-
+    if (isInDebugMode) {
+      _email = 'Janja@example.com';
+      _password = '1234567890';
+      return;
+    }
   }
 
   set email(String email) {
-    // if (isInDebugMode) return;
+    if (isInDebugMode) return;
     _email = email;
   }
 
   set password(String password) {
-    // if (isInDebugMode) return;
+    if (isInDebugMode) return;
     _password = password;
   }
 
@@ -78,11 +73,10 @@ class Authentication {
   }
 
   void signUp() async {
-    // if (isInDebugMode) {
-    //   signIn();
-    //   return;
-    // } else
-      if (!inputsAreValid()) {
+    if (isInDebugMode) {
+      signIn();
+      return;
+    } else if (!inputsAreValid()) {
       return;
     }
 
