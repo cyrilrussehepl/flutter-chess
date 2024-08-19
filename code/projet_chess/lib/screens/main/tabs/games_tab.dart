@@ -71,7 +71,7 @@ class GamesTab extends StatelessWidget {
       ),
     );
   }
-
+  //TODO: game over show game state
   Widget _buildGameTile(BuildContext context, GameInfo game) {
     return ListTile(
       onTap: () {

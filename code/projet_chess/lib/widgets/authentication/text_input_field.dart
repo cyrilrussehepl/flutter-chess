@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TextInputField extends StatelessWidget {
+class TextInputField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final bool obscureText;
@@ -15,15 +15,34 @@ class TextInputField extends StatelessWidget {
   });
 
   @override
+  _TextInputFieldState createState() => _TextInputFieldState();
+}
+
+class _TextInputFieldState extends State<TextInputField> {
+  bool _isObscure = true;
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
+      controller: widget.controller,
       decoration: InputDecoration(
-        labelText: labelText,
+        labelText: widget.labelText,
         border: const OutlineInputBorder(),
+        suffixIcon: widget.obscureText
+            ? IconButton(
+          icon: Icon(
+            _isObscure ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              _isObscure = !_isObscure;
+            });
+          },
+        )
+            : null,
       ),
-      obscureText: obscureText,
-      keyboardType: keyboardType,
+      obscureText: widget.obscureText ? _isObscure : false,
+      keyboardType: widget.keyboardType,
     );
   }
 }
