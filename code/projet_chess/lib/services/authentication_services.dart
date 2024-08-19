@@ -56,8 +56,7 @@ class Authentication {
       await FirebaseAuth.instance.signOut();
       if (FirebaseAuth.instance.currentUser != null) return;
       if (!_context!.mounted) return;
-      Navigator.of(_context!).pushReplacement(
-          MaterialPageRoute(builder: (context) => const SignInPage()));
+      Navigator.pushReplacementNamed(_context!, SignInPage.routeName);
     } catch (e) {
       ErrorDisplayCustom.showError('Impossible de se déconnecter', _context!);
     }
@@ -70,8 +69,7 @@ class Authentication {
     try {
       await _auth.signInWithEmailAndPassword(
           email: _email, password: _password);
-      Navigator.pushReplacement(
-          _context!, MaterialPageRoute(builder: (context) => const MainPage()));
+      Navigator.pushReplacementNamed(_context!, MainPage.routeName);
     } on FirebaseAuthException catch (e) {
       ErrorDisplayCustom.showAuthError(e.code, _context!);
     } on ArgumentError catch (e) {
@@ -132,8 +130,7 @@ class Authentication {
     }
 
     if (!_context!.mounted) return;
-    Navigator.of(_context!).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainPage()));
+    Navigator.pushReplacementNamed(_context!, MainPage.routeName);
   }
 
   bool inputsAreValid() {
