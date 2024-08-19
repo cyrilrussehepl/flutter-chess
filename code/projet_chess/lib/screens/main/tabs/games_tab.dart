@@ -73,6 +73,8 @@ class GamesTab extends StatelessWidget {
   }
   //TODO: game over show game state
   Widget _buildGameTile(BuildContext context, GameInfo game) {
+    String txt = game.victory == 'ongoing'? '${game.opponent}':'${game.victory.toUpperCase()} vs ${game.opponent}';
+
     return ListTile(
       onTap: () {
         Navigator.push(
@@ -92,7 +94,7 @@ class GamesTab extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
           color: Colors.white,
         ),
-        child: Text('Partie contre ${game.opponent}'),
+        child: Text(txt),
       ),
     );
   }

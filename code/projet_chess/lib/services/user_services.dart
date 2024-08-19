@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dto/game_info.dart';
 import 'package:dto/user.dart' as user_dto;
+import 'package:dto/game.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projet_chess/services/games_services.dart';
 
 class UserService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -417,13 +419,13 @@ class UserService {
     await userRef.update({
       'receivedChallengeRequests': FieldValue.arrayRemove([friendId]),
       'gamesOnGoing':
-          FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: friendId).toJson()])
+          FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: friendId, victory: 'ongoing').toJson()])
     });
 
     await friendRef.update({
       'sentChallengeRequests': FieldValue.arrayRemove([user.username]),
       'gamesOnGoing': FieldValue.arrayUnion(
-          [GameInfo(gameId: gameId, opponent: user.username).toJson()])
+          [GameInfo(gameId: gameId, opponent: user.username, victory: 'ongoing').toJson()])
     });
   }
 
@@ -449,16 +451,20 @@ class UserService {
       throw Future.error('error');
     }
 
+    Game game = await GameService.instance.getGame(gameId);
+
+    bool userHasWon = ((game.gameState == 'white_won' && game.playerWhite == user.username)||(game.gameState == 'black_won' && game.playerBlack == user.username));
+
     await userRef.update({
       'gamesOnGoing':
-      FieldValue.arrayRemove([GameInfo(gameId: gameId, opponent: gameInfoUser.opponent).toJson()]),
-      'gamesOver':FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: gameInfoUser.opponent).toJson()]),
+      FieldValue.arrayRemove([GameInfo(gameId: gameId, opponent: gameInfoUser.opponent, victory: gameInfoUser.victory).toJson()]),
+      'gamesOver':FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: gameInfoUser.opponent, victory: userHasWon?'victoire':'défaite').toJson()]),
     });
 
     await friendRef.update({
       'gamesOnGoing':
-      FieldValue.arrayRemove([GameInfo(gameId: gameId, opponent: user.username).toJson()]),
-      'gamesOver':FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: user.username).toJson()]),
+      FieldValue.arrayRemove([GameInfo(gameId: gameId, opponent: user.username, victory: gameInfoUser.victory).toJson()]),
+      'gamesOver':FieldValue.arrayUnion([GameInfo(gameId: gameId, opponent: user.username, victory: !userHasWon?'victoire':'défaite').toJson()]),
     });
   }
 

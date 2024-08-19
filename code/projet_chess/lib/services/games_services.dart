@@ -18,6 +18,15 @@ class GameService {
     username = user.username;
   }
 
+  Future<Game> getGame(String gameId) async{
+
+    final gameDoc = await _db.collection('games')
+        .doc(gameId)
+        .get();
+
+    return Game.fromJson(gameDoc.data()!);
+  }
+
   Stream<Game?> getGameStream(String gameId) {
     return _db
         .collection('games')

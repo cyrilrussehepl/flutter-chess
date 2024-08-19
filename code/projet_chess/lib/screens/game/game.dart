@@ -86,10 +86,12 @@ class GameScreen extends StatelessWidget {
   }
 
   Widget _buildGameOverInfo(Game game) {
+    bool hasWon = ((game.playerBlack == opponentUsername && game.gameState == 'white_won')||(game.playerWhite == opponentUsername && game.gameState == 'black_won'));
+    String txt = hasWon?'Vous avez gagné':'Vous avez perdu';
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: Text(
-        'La partie est terminée: ${game.gameState}',
+        txt,
         style: AppTextStyles.gameHeading
       ),
     );

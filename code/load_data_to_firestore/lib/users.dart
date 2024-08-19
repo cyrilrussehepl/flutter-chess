@@ -17,7 +17,7 @@ List<User> users = [
       sentChallengeRequests: [],
       receivedChallengeRequests: [],
       gamesOnGoing: [
-        GameInfo(gameId: 'game1', opponent: 'janjaTheGoat'),
+        GameInfo(gameId: 'game1', opponent: 'janjaTheGoat', victory: 'ongoing'),
       ],
       gamesOver: []),
   User(
@@ -42,7 +42,7 @@ List<User> users = [
         'antoine'
       ],
       gamesOnGoing: [
-        GameInfo(gameId: 'game1', opponent: 'adam'),
+        GameInfo(gameId: 'game1', opponent: 'adam', victory: 'ongoing'),
       ],
       gamesOver: []),
   User(
@@ -63,7 +63,7 @@ List<User> users = [
       ],
       receivedChallengeRequests: [],
       gamesOnGoing: [
-        GameInfo(gameId: 'game2', opponent: 'LightningBolt'),
+        GameInfo(gameId: 'game2', opponent: 'LightningBolt', victory: 'ongoing'),
       ],
       gamesOver: []),
   User(
@@ -85,7 +85,7 @@ List<User> users = [
       sentChallengeRequests: [],
       receivedChallengeRequests: [],
       gamesOnGoing: [
-        GameInfo(gameId: 'game2', opponent: 'antoine'),
+        GameInfo(gameId: 'game2', opponent: 'antoine', victory: 'ongoing'),
       ],
       gamesOver: []),
   User(
@@ -104,7 +104,7 @@ List<User> users = [
       sentChallengeRequests: [],
       receivedChallengeRequests: [],
       gamesOnGoing: [
-        GameInfo(gameId: 'game3', opponent: 'CabeiBusha'),
+        GameInfo(gameId: 'game3', opponent: 'CabeiBusha', victory: 'ongoing'),
       ],
       gamesOver: []),
   User(
@@ -125,7 +125,7 @@ List<User> users = [
       sentChallengeRequests: [],
       receivedChallengeRequests: [],
       gamesOnGoing: [
-        GameInfo(gameId: 'game3', opponent: 'MM'),
+        GameInfo(gameId: 'game3', opponent: 'MM', victory: 'ongoing'),
       ],
       gamesOver: []),
 ];
