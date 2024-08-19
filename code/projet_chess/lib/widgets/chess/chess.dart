@@ -1,8 +1,8 @@
 import 'package:dto/game.dart';
+import 'package:flutter/material.dart';
 import 'package:projet_chess/services/games_services.dart';
 import 'package:projet_chess/widgets/chess/pieces.dart';
 import 'package:projet_chess/widgets/chess/square.dart';
-import 'package:flutter/material.dart';
 
 class ChessGame extends StatefulWidget {
   final Game game;

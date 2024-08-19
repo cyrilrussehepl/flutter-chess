@@ -1,8 +1,8 @@
-import 'package:dto/game_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:dto/game_info.dart';
 import 'package:dto/user.dart' as user_dto;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UserService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -10,7 +10,6 @@ class UserService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
   UserService._internal();
-
   static UserService get instance => _instance;
 
   Future<user_dto.User> getUser() async {
@@ -52,22 +51,6 @@ class UserService {
       if (snapshot.docs.isNotEmpty) {
         user_dto.User user = user_dto.User.fromJson(snapshot.docs.first.data());
         return user;
-      } else {
-        throw Stream.error('Erreur de chargement des données utilisateur');
-      }
-    });
-  }
-
-  Stream<String> getUserNationalityStream() {
-    final userAuthentifie = FirebaseAuth.instance.currentUser;
-    return _db
-        .collection('users')
-        .doc(userAuthentifie?.email)
-        .snapshots()
-        .map((snapshot) {
-      if (snapshot.exists) {
-        user_dto.User user = user_dto.User.fromJson(snapshot.data());
-        return user.nationality;
       } else {
         throw Stream.error('Erreur de chargement des données utilisateur');
       }
@@ -285,6 +268,34 @@ class UserService {
     });
   }
 
+  Future<List<user_dto.User>> searchUsers(String query) async {
+    if (query.isEmpty) {
+      return [];
+    }
+
+    final currentUser = await getUser();
+    String lowercaseQuery = query.toLowerCase();
+
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('usernameLowerCase', isGreaterThanOrEqualTo: lowercaseQuery)
+        .where('usernameLowerCase', isLessThan: lowercaseQuery + 'z')
+        .get();
+
+    return snapshot.docs
+        .map((doc) {
+          user_dto.User user =
+              user_dto.User.fromJson(doc.data() as Map<String, dynamic>);
+          return user;
+        })
+        .where((user) =>
+            !currentUser.friends.contains(user.username) &&
+            !currentUser.sentFriendRequests.contains(user.username) &&
+            !currentUser.receivedFriendRequests.contains(user.username) &&
+            currentUser.username != user.username)
+        .toList();
+  }
+
   Future<void> sendFriendRequest(String username) async {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     final DocumentReference userRef = FirebaseFirestore.instance
@@ -479,8 +490,6 @@ class UserService {
     });
   }
 
-
-
   void updateUser(String newFullName, String newNationality) async {
     final userAuthentifie = FirebaseAuth.instance.currentUser;
     final DocumentReference userRef = FirebaseFirestore.instance
@@ -489,6 +498,5 @@ class UserService {
     await userRef
         .update({'fullName': newFullName, 'nationality': newNationality});
   }
-
 
 }

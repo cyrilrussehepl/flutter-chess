@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projet_chess/screens/main/friends_tab.dart';
-import 'package:projet_chess/screens/main/games_tab.dart';
-import 'package:projet_chess/screens/main/invitations_tab.dart';
-import 'package:projet_chess/screens/main/profile_tab.dart';
+import 'package:projet_chess/screens/main/tabs/friends_tab.dart';
+import 'package:projet_chess/screens/main/tabs/games_tab.dart';
+import 'package:projet_chess/screens/main/tabs/invitations_tab.dart';
+import 'package:projet_chess/screens/main/tabs/profile_tab.dart';
 import 'package:projet_chess/widgets/loading.dart';
 import 'package:projet_chess/widgets/logout_button.dart';
 

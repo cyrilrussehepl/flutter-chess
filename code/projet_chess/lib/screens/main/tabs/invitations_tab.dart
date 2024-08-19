@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projet_chess/services/user_services.dart';
-import 'package:projet_chess/widgets/loading.dart';
 import 'package:projet_chess/widgets/custom_list/list_view.dart';
+import 'package:projet_chess/widgets/loading.dart';
 
 class InvitationsTab extends StatelessWidget {
   final TabController tabController;

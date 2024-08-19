@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:projet_chess/services/user_services.dart';
-import 'package:projet_chess/widgets/loading.dart';
-import 'package:projet_chess/widgets/custom_list/list_view.dart';
 import 'package:dto/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:projet_chess/screens/main/profile_tab.dart';
+import 'package:flutter/material.dart';
+import 'package:projet_chess/screens/main/tabs/profile_tab.dart';
+import 'package:projet_chess/services/user_services.dart';
+import 'package:projet_chess/widgets/custom_list/list_view.dart';
+import 'package:projet_chess/widgets/loading.dart';
 
 class FriendsTab extends StatefulWidget {
   final TabController tabController;
@@ -21,33 +20,6 @@ class FriendsTabState extends State<FriendsTab> {
   final _userServices = UserService.instance;
   bool isSending = false;
 
-  Future<List<User>> searchUsers(String query) async {
-    if (query.isEmpty) {
-      return [];
-    }
-
-    final currentUser = await _userServices.getUser();
-    String lowercaseQuery = query.toLowerCase();
-
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('usernameLowerCase', isGreaterThanOrEqualTo: lowercaseQuery)
-        .where('usernameLowerCase', isLessThan: lowercaseQuery + 'z')
-        .get();
-
-    return snapshot.docs
-        .map((doc) {
-          User user = User.fromJson(doc.data() as Map<String, dynamic>);
-          return user;
-        })
-        .where((user) =>
-            !currentUser.friends.contains(user.username) &&
-            !currentUser.sentFriendRequests.contains(user.username) &&
-            !currentUser.receivedFriendRequests.contains(user.username)&&
-            currentUser.username != user.username)
-        .toList();
-  }
-
   @override
   void initState() {
     super.initState();
@@ -57,7 +29,7 @@ class FriendsTabState extends State<FriendsTab> {
 
   void onSearchChanged() async {
     String query = searchController.text;
-    List<User> results = await searchUsers(query);
+    List<User> results = await _userServices.searchUsers(query);
     setState(() {
       searchResults = results;
     });

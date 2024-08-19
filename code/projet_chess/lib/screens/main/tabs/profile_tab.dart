@@ -1,13 +1,14 @@
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:dto/user.dart' as user_dto;
-import 'package:projet_chess/services/user_services.dart';
-import 'package:projet_chess/widgets/loading.dart';
 import 'dart:async';
 import 'dart:io';
+
 import 'package:country_picker/country_picker.dart';
+import 'package:dto/user.dart' as user_dto;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:projet_chess/services/user_services.dart';
+import 'package:projet_chess/widgets/loading.dart';
 
 class Profile extends StatefulWidget {
   final String? username;
