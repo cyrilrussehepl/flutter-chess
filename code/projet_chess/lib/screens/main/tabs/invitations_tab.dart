@@ -10,62 +10,76 @@ class InvitationsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userService = UserService.instance;
-
     return TabBarView(
       controller: tabController,
       children: <Widget>[
-        StreamBuilder(
-          stream: userService.getChallengesReceivedStream(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingWidget();
-            }
-
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text(
-                    'Une erreur est survenue lors du chargement des défis reçus'),
-              );
-            }
-
-            if (snapshot.hasData && snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text('Aucun défi'),
-              );
-            }
-
-            return ListViewCustom(
-                list: snapshot.data!, listType: ListType.challengeReceived,);
-          },
-        ),
-        StreamBuilder(
-          stream: userService.getChallengesSentStream(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingWidget();
-            }
-
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text(
-                    'Une erreur est survenue lors du chargement des défis envoyés'),
-              );
-            }
-
-            if (snapshot.hasData && snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text('Aucun défi'),
-              );
-            }
-
-            return ListViewCustom(
-              list: snapshot.data!,
-              listType: ListType.challengesSent,
-            );
-          },
-        ),
+        _buildChallengesReceivedStream(),
+        _buildChallengesSentStream(),
       ],
+    );
+  }
+
+  Widget _buildChallengesReceivedStream() {
+    final userService = UserService.instance;
+
+    return StreamBuilder(
+      stream: userService.getChallengesReceivedStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingWidget();
+        }
+
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text(
+              'Une erreur est survenue lors du chargement des défis reçus',
+            ),
+          );
+        }
+
+        if (snapshot.hasData && snapshot.data!.isEmpty) {
+          return const Center(
+            child: Text('Aucun défi'),
+          );
+        }
+
+        return ListViewCustom(
+          list: snapshot.data!,
+          listType: ListType.challengeReceived,
+        );
+      },
+    );
+  }
+
+  Widget _buildChallengesSentStream() {
+    final userService = UserService.instance;
+
+    return StreamBuilder(
+      stream: userService.getChallengesSentStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingWidget();
+        }
+
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text(
+              'Une erreur est survenue lors du chargement des défis envoyés',
+            ),
+          );
+        }
+
+        if (snapshot.hasData && snapshot.data!.isEmpty) {
+          return const Center(
+            child: Text('Aucun défi'),
+          );
+        }
+
+        return ListViewCustom(
+          list: snapshot.data!,
+          listType: ListType.challengesSent,
+        );
+      },
     );
   }
 }
